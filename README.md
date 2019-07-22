@@ -1,5 +1,8 @@
 ## Welcome to GitHub Pages
 
+Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (Automatic License Plate Recognition): FPGA implementation of VLPD using an algorithm based on morphologic operations. 
+Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
+
 You can use the [editor on GitHub](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
