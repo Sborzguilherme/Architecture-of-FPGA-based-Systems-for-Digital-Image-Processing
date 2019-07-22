@@ -1,0 +1,2 @@
+# Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing
+Final Work for the Computer Engineer Degree - Univali - 2019  Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (Automatic License Plate Recognition): FPGA implementation of VLPD using an algorithm based on morphologic operations. Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
