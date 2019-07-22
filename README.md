@@ -1,10 +1,12 @@
-## Welcome to GitHub Pages
+## System Overview
+
+Since image processing algorithms are expensive to be executed in software, hardware accelerators can be developed to increase performance for those algorithms. Hardware accelerators can consume less energy and execute fast while achieving good results.   
 
 Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (Automatic License Plate Recognition): FPGA implementation of VLPD using an algorithm based on morphologic operations. 
 
 Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
 
-![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/Images/en_system_alpr.png)
+![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/lena.png)
 
 You can use the [editor on GitHub](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
