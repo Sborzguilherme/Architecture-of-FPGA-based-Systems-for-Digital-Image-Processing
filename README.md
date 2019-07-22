@@ -6,7 +6,7 @@ Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (A
 
 Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
 
-![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/lena.png)
+![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/lena.jpg)
 
 You can use the [editor on GitHub](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
