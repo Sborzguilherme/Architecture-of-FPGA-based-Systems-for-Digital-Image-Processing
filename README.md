@@ -1,7 +1,10 @@
 ## Welcome to GitHub Pages
 
 Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (Automatic License Plate Recognition): FPGA implementation of VLPD using an algorithm based on morphologic operations. 
+
 Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
+
+![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/Images/en_system_alpr.png)
 
 You can use the [editor on GitHub](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
