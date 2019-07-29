@@ -1,7 +1,7 @@
 # --------------------------------------------- Library Fixed-Point -------------------------------------------------- #
 # Author: Guilherme Sborz
 # Date: 29/07/2019
-# Function to deal with fixed-point <--> floating-point conversion
+# Functions to deal with fixed-point <--> floating-point conversion
 # -------------------------------------------------------------------------------------------------------------------- #
 # Library from python to deal with bits
 from bitstring import Bits
