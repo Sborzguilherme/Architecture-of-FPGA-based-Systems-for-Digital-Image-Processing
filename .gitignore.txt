@@ -1,0 +1,5 @@
+# Ignored extensions
+*.idea
+*.xml
+*.iml
+
