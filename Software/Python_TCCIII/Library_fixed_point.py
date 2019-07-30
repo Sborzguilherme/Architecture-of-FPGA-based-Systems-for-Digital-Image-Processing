@@ -35,16 +35,26 @@ def float_to_fixed(val: float, print_msg=False, hex_format=True) -> str:
         return_value = x[2:].zfill(MSB+LSB)         # Complete with zeros in the left until the fixed length is reached
     if(hex_format):
         return_value = hex(int(return_value, 2))    # Convert binary string to hexadecimal string
+        return_value = "0x" + return_value[2:].zfill((MSB+LSB)//4)  # Complete the number of zeros until all the bits are
+                                                                    #    represented in the hexadecimal format
+
 
     return return_value                             # Return the string value in binary format
-# -------------------------------------------------------------------------------------------------------------------- #
 # ---------------------------------- Algorithm to convert fixed-point to float --------------------------------------- #
 # 1. Convert string bits received to a integer value
 # 2. Divide integer value by the fract part of the fixed-point format
 # Parameters
 #   val: fixed value to be converted
 #   str_format: indicate the format of the string (2: for string in binary format, 16: for string in hexadecimal format)
-def fixed_to_float(val:str, str_format=2) -> float:
+def fixed_to_float(val:str, str_format=16) -> float:
     x = int(val,str_format)                             # Convert string received to interger value
     return x/(2**LSB)                                   # Return integer value divided by the fractionary part
-# -------------------------------------------------------------------------------------------------------------------- #
+# ------------------------- Function to convert float to integer (fixed point notation) ------------------------------ #
+def float_to_integer_fx(num):
+    num *= (2 ** (LSB))    # Step 1 from the algorithm
+    return round(num)           # Step 2 from the algorithm
+# ----------------------------------------- Fixed-Point Multiplication ----------------------------------------------- #
+def fixed_point_mult(a, b):
+    mult = (a/(2**LSB)) * (b/(2**LSB))
+    return mult
+
