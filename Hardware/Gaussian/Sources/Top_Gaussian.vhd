@@ -53,8 +53,8 @@ architecture arch of Top_Gaussian is
     signal w_CLR_CNT_ADDR_BIAS    : std_logic;
     signal w_PIX_RDY              : std_logic;
     signal w_DONE                 : std_logic;
-    signal w_BUF_DONE             : std_logic_vector(3 downto 0) := (others=>'0');
-    signal w_BUF_RDY              : std_logic_vector(3 downto 0) := (others=>'0');
+    signal w_BUF_DONE             : std_logic_vector(4 downto 0) := (others=>'0');
+    signal w_BUF_RDY              : std_logic_vector(4 downto 0) := (others=>'0');
     -- signal r_REG_OUT				    : fixed;
 	  -- signal r_IN_PIX 			      : fixed;
 	  -- signal r_OUT_PIX 			    : fixed;
@@ -73,8 +73,8 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
   begin
       if(rising_edge(i_CLK)) then
         if(i_VALID_PIXEL = '1') then
-          w_BUF_RDY(3 downto 1) <= w_BUF_RDY(2 downto 0);
-          w_BUF_DONE(3 downto 1) <= w_BUF_DONE(2 downto 0);
+          w_BUF_RDY(4 downto 1) <= w_BUF_RDY(3 downto 0);
+          w_BUF_DONE(4 downto 1) <= w_BUF_DONE(3 downto 0);
           w_BUF_DONE(0) <= w_DONE;
           w_BUF_RDY(0) <= w_PIX_RDY;
         end if;
@@ -136,7 +136,12 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
       o_DONE            => w_DONE
     );
 
-		  o_PIX_RDY <= w_BUF_RDY(3);
+    g_output_singals : if p_KERNEL_HEIGHT = 3 generate
+      o_PIX_RDY <= w_BUF_RDY(3);
       o_DONE    <= w_BUF_DONE(3);
+    else generate
+      o_PIX_RDY <= w_BUF_RDY(4);
+      o_DONE    <= w_BUF_DONE(4);
+    end generate;
 
 end architecture;

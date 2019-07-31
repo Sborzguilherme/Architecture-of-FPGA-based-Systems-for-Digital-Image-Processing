@@ -93,8 +93,24 @@ begin
     o_OUT_KERNEL  => w_DRA_OUT
   );
 
-  -- Operation
-    Filter_3_i : Filter_3
+g_filter : if p_KERNEL_HEIGHT = 3 generate
+
+    -- Operation
+      Filter_3_i : Filter_3
+      generic map (
+        p_FILTER_SIZE => c_KERNEL_SIZE
+      )
+      port map (
+        i_CLK     => i_CLK,
+        i_RST     => i_RST,
+        i_ENA_REG => i_ENA_WRI_KER,
+        i_KERNEL  => w_DRA_OUT,
+        i_WEIGHTS => c_Gaussian_Kernel_3,
+        o_RESULT  => o_OUT_PIXEL
+      );
+  else generate
+
+    Filter_5_i : Filter_5
     generic map (
       p_FILTER_SIZE => c_KERNEL_SIZE
     )
@@ -103,10 +119,10 @@ begin
       i_RST     => i_RST,
       i_ENA_REG => i_ENA_WRI_KER,
       i_KERNEL  => w_DRA_OUT,
-      i_WEIGHTS => c_Gaussian_Kernel_3,
+      i_WEIGHTS => c_Gaussian_Kernel_5,
       o_RESULT  => o_OUT_PIXEL
     );
-
+  end generate;
   -------------------------- COMPARERS AND COUNTERS ------------------------------
  -- Only counts when a valid pixel arrives
   w_ENA_BF          <= i_ENA_CNT_BUF_FIL      and i_VALID_PIXEL;
