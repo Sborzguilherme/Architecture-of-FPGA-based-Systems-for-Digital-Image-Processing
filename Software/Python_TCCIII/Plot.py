@@ -7,22 +7,23 @@ import matplotlib.pyplot as plt
 import Library_txt_files as Lib_txt
 import Library_operations as Lib_op
 import numpy as np
+import skimage.measure as sk
 # -------------------------------------------------------------------------------------------------------------------- #
 virtual_board_approach = 2
 kernel = (3,3)
 img_tested = "lena"
-input_directory = "../../Data/Input_Data/TXT/"
+input_directory = "../../Data/Input_Data/TXT/VB_3/"
 output_directory = "../../Data/Output_Data/VB_" + str(virtual_board_approach)+"/"
 img_name = "lena"
 
 img_heigth = img_width = 512
 
-normalized_img_width  = img_heigth - (kernel[0]-1//2)
-normalized_img_heigth = img_width -  (kernel[1]-1//2)
+hw_result = Lib_txt.open_txt_values(output_directory+img_name+"_"+str(kernel[0])+".txt", img_heigth, img_width)
+img = Lib_txt.open_txt_values(input_directory+img_name+".txt", img_heigth, img_width)
 
-hw_result = Lib_txt.open_txt_values(output_directory+img_name+"hw_"+str(virtual_board_approach), img_heigth, img_width)
-img = Lib_txt.open_txt_values(input_directory+img_name+str(virtual_board_approach), normalized_img_heigth, normalized_img_width)
-sw_result = Lib_op.fixed_point_convolution_2D(img, kernel, virtual_board_approach)
+
+kernel_gaussian = Lib_op.gaussian_kernel_gen(kernel[0], 1)
+sw_result = Lib_op.fixed_point_convolution_2D(img, kernel_gaussian, virtual_board_approach)
 
 plt.subplot(121)
 plt.imshow(sw_result, cmap='gray')
@@ -30,8 +31,13 @@ plt.subplot(122)
 plt.imshow(hw_result, cmap='gray')
 plt.show()
 
+diff = np.absolute(np.subtract(sw_result, hw_result))
+
+print("RMSE = ", sk.compare_nrmse(sw_result, hw_result))
+print("PSNR = ", sk.compare_psnr(sw_result, hw_result, 2**8))
+
 plt.figure("Difference")
-plt.imshow(np.diff(sw_result, hw_result))
+plt.imshow(diff)
 plt.show()
 
 
