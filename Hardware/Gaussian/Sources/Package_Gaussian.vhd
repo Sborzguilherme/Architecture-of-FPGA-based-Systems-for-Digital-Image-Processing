@@ -177,6 +177,21 @@ package Package_Gaussian is
   );
   end component Row_Buffer;
 
+  component SG_Filter_3
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component SG_Filter_3;
+
+
   component Top_Gaussian
   generic (
     p_KERNEL_HEIGHT    : integer := 5;

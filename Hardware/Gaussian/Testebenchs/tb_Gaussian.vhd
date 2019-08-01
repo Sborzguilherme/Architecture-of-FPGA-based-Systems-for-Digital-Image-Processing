@@ -49,7 +49,7 @@ p_READ : process
 
     begin
     wait for period*2;
-    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/14_bits/lena_3.txt", READ_MODE);
+    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_3.txt", READ_MODE);
     while not endfile(fil_in) loop
       readline(fil_in, v_LINE);
       read(v_LINE, v_data);
@@ -63,7 +63,7 @@ p_WRITE : process
   variable v_line : line;
 begin
   wait for period;
-  file_open(fil_out, "../../../Data/Output_Data/VB_2/14_bits/lena_3.txt", WRITE_MODE);
+  file_open(fil_out, "../../../Data/Output_Data/VB_2/16_bits/lena_3.txt", WRITE_MODE);
   while done = '0' loop
     if pix_rdy = '1' then
         write(v_line, pix_out);

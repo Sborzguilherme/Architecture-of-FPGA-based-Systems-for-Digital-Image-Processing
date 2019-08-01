@@ -12,7 +12,7 @@ import skimage.measure as sk
 # -------------------------------------------------------------------------------------------------------------------- #
 virtual_board_approach = 2
 kernel = (3,3)
-bits = 14
+bits = 16
 input_directory = "../../Data/Input_Data/TXT/VB_3/"+str(bits)+"_bits/"
 output_directory = "../../Data/Output_Data/VB_" + str(virtual_board_approach)+"/"+str(bits)+"_bits/"
 img_name = "lena"
