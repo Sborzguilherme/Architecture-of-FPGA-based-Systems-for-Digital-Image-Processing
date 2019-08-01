@@ -5,10 +5,11 @@
 # -------------------------------------------------------------------------------------------------------------------- #
 # Library from python to deal with bits
 from bitstring import Bits
+import math
 
 # Fixed-point format (8.12)
 MSB = 8                                         # Bit signal + integer part (0 + 8)
-LSB = 8                                         # Fract part
+LSB = 6                                         # Fract part
 
 # Maximum value (considering 0 bits for signal)
 MAX_VALUE = 2**(MSB+LSB)-1
@@ -35,9 +36,8 @@ def float_to_fixed(val: float, print_msg=False, hex_format=True) -> str:
         return_value = x[2:].zfill(MSB+LSB)         # Complete with zeros in the left until the fixed length is reached
     if(hex_format):
         return_value = hex(int(return_value, 2))    # Convert binary string to hexadecimal string
-        return_value = "0x" + return_value[2:].zfill((MSB+LSB)//4)  # Complete the number of zeros until all the bits are
+        return_value = "0x" + return_value[2:].zfill(int(math.ceil((MSB+LSB)/4)))  # Complete the number of zeros until all the bits are
                                                                     #    represented in the hexadecimal format
-
 
     return return_value                             # Return the string value in binary format
 # ---------------------------------- Algorithm to convert fixed-point to float --------------------------------------- #

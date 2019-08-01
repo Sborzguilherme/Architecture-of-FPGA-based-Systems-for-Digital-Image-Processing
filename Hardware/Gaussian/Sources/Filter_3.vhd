@@ -34,7 +34,7 @@ entity Filter_3 is
 
 architecture arch of Filter_3 is
 
-  signal w_BUF_ENA_WRI : std_logic_vector(3 downto 0) := (others => '0');
+  signal w_BUF_ENA_WRI : std_logic_vector(2 downto 0) := (others => '0');
 
   signal r_REG_0 : fixed_vector(8 downto 0);
   signal r_REG_1 : fixed_vector(3 downto 0);
@@ -43,21 +43,19 @@ architecture arch of Filter_3 is
 
   signal w_STAGE_0 : fixed_vector(8 downto 0);  -- Kernel * weights
   signal w_STAGE_1 : fixed_vector(3 downto 0);  -- w_STAGE_0(0 to 7) - 8 -> 4 // w_STAGE_0(8) not used
-  signal w_STAGE_2 : fixed_vector(1 downto 0);  -- w_STAGE_1(0 to 3) - 4 -> 2  // w_STAGE_0(24 not used)
+  signal w_STAGE_2 : fixed_vector(1 downto 0);  -- w_STAGE_1(0 to 3) - 4 -> 2 // w_STAGE_0(24 not used)
   signal w_STAGE_3 : fixed;
 
   signal r_REG_8_S1 : fixed;
   signal r_REG_8_S2 : fixed;
   signal r_REG_8_S3 : fixed;
 
-
   begin
-
     -- Shift signal to enable load in the barrier registers
     shift_left_signals : process(i_CLK, i_ENA_REG)
     begin
         if(rising_edge(i_CLK)) then
-          w_BUF_ENA_WRI(3 downto 1) <= w_BUF_ENA_WRI(2 downto 0);
+          w_BUF_ENA_WRI(2 downto 1) <= w_BUF_ENA_WRI(1 downto 0);
           w_BUF_ENA_WRI(0) <= i_ENA_REG;
         end if;
     end process;
@@ -70,7 +68,7 @@ architecture arch of Filter_3 is
 			port map (
 			  i_CLK  => i_CLK,
 			  i_RST  => i_RST,
-			  i_ENA  => w_BUF_ENA_WRI(0),
+			  i_ENA  => i_ENA_REG,
 			  i_CLR  => '0',
 			  i_DIN  => w_STAGE_0(i),
 			  o_DOUT => r_REG_0(i)
@@ -86,7 +84,7 @@ architecture arch of Filter_3 is
         port map (
           i_CLK  => i_CLK,
           i_RST  => i_RST,
-          i_ENA  => w_BUF_ENA_WRI(1),
+          i_ENA  => w_BUF_ENA_WRI(0),
           i_CLR  => '0',
           i_DIN  => w_STAGE_1(i),
           o_DOUT => r_REG_1(i)
@@ -97,7 +95,7 @@ architecture arch of Filter_3 is
         port map (
           i_CLK  => i_CLK,
           i_RST  => i_RST,
-          i_ENA  => w_BUF_ENA_WRI(1),
+          i_ENA  => w_BUF_ENA_WRI(0),
           i_CLR  => '0',
           i_DIN  => r_REG_0(8),
           o_DOUT => r_REG_8_S1
@@ -111,7 +109,7 @@ architecture arch of Filter_3 is
         port map (
           i_CLK  => i_CLK,
           i_RST  => i_RST,
-          i_ENA  => w_BUF_ENA_WRI(2),
+          i_ENA  => w_BUF_ENA_WRI(1),
           i_CLR  => '0',
           i_DIN  => w_STAGE_2(i),
           o_DOUT => r_REG_2(i)
@@ -122,7 +120,7 @@ architecture arch of Filter_3 is
     port map (
       i_CLK  => i_CLK,
       i_RST  => i_RST,
-      i_ENA  => w_BUF_ENA_WRI(2),
+      i_ENA  => w_BUF_ENA_WRI(1),
       i_CLR  => '0',
       i_DIN  =>r_REG_8_S1,
       o_DOUT => r_REG_8_S2
@@ -135,7 +133,7 @@ architecture arch of Filter_3 is
     port map (
       i_CLK  => i_CLK,
       i_RST  => i_RST,
-      i_ENA  => w_BUF_ENA_WRI(3),
+      i_ENA  => w_BUF_ENA_WRI(2),
       i_CLR  => '0',
       i_DIN  => w_STAGE_3,
       o_DOUT => r_REG_3
@@ -145,7 +143,7 @@ architecture arch of Filter_3 is
     port map (
       i_CLK  => i_CLK,
       i_RST  => i_RST,
-      i_ENA  => w_BUF_ENA_WRI(3),
+      i_ENA  => w_BUF_ENA_WRI(2),
       i_CLR  => '0',
       i_DIN  => r_REG_8_S2,
       o_DOUT => r_REG_8_S3

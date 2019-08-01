@@ -10,12 +10,11 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 # -------------------------------------------------------------------------------------------------------------------- #
-def Generate_img_VHDL(img_name, kernel, virtual_board_approach, ):
+def Generate_img_VHDL(img_name, kernel, virtual_board_approach, bits):
 
     # Open original img
     input_directory = "../../Data/Input_Data/JPG_PNG/"
-    output_directory = "../../Data/Input_Data/TXT/VB_"+str(virtual_board_approach)+"/"
-    #img_name = "lena"
+    output_directory = "../../Data/Input_Data/TXT/VB_"+str(virtual_board_approach)+"/" + str(bits) + "_bits/"
     color_lena = cv2.imread(input_directory + "color_"+img_name+".jpg", cv2.IMREAD_COLOR)
     gray_lena = cv2.cvtColor(color_lena, cv2.COLOR_BGR2GRAY)
 
@@ -24,7 +23,7 @@ def Generate_img_VHDL(img_name, kernel, virtual_board_approach, ):
 
     x, y = np.shape(treated_img)
 
-    # # Write in a file
+    # Write in a file
     Lib_txt.generate_txt_fixed_point_img(treated_img, output_directory+img_name+"_"+str(kernel[0])+".txt")
 
     # Verify if image was write correctly
@@ -32,18 +31,22 @@ def Generate_img_VHDL(img_name, kernel, virtual_board_approach, ):
 
 def Generate_string_constant(size, sigma):
     kernel = Lib_op.gaussian_kernel_gen(size, sigma)
-    #print(kernel)
     cont = 0
     cont_l = 0
     string = ""
     for i in range(len(kernel)):
         for j in range(len(kernel[0])):
-            a = Lib_fx.float_to_fixed(kernel[i][j])
-            if(cont_l < 3):
-                string += str(cont) + "=> x\"" + a[2:] + "\", "
+            a = Lib_fx.float_to_fixed(kernel[i][j], hex_format=False) # 14 bits constant
+            print(a)
+            #a = Lib_fx.float_to_fixed(kernel[i][j])
+            if(cont_l < size):
+                #string += str(cont) + "=> x\"" + a[2:] + "\", "
+                string += str(cont) + "=>\"" + a + "\", "      # 14 bits constant
+
             else:
                 cont_l = 0
-                string += str(cont) + "=> x\"" + a[2:] + "\",\n"
+                #string += str(cont) + "=> x\"" + a[2:] + "\",\n"
+                string += str(cont) + "=>\"" + a + "\",\n"     # 14 bits constant
             cont   +=1
             cont_l +=1
 
@@ -51,7 +54,7 @@ def Generate_string_constant(size, sigma):
         f.write(string)
     f.close()
 
-
-Generate_img_VHDL("lena", (3,3), 2)
+Generate_string_constant(3, 1)
+#Generate_img_VHDL("lena", (3,3), 3, 14)
 
 

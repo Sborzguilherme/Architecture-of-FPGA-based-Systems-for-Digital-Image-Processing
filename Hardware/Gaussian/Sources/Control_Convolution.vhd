@@ -128,7 +128,7 @@ begin
 
   o_ENA_WRI_REG		  <= '1' when  r_state_reg = s_VAL_WIN     else '0';
 
-  o_PIX_RDY          <= '1' when r_state_reg = s_VAL_WIN    else '0';
+  o_PIX_RDY          <= '1' when r_state_reg = s_VAL_WIN     else '0';
 
   o_DONE             <= '1' when r_state_reg = s_END         else '0';
 

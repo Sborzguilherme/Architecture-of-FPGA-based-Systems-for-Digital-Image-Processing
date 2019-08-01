@@ -126,6 +126,20 @@ package Package_Gaussian is
   );
   end component Filter_5;
 
+  component Filter_7
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component Filter_7;
+
   component Flip_Flop
   port (
     i_CLK  : in  std_logic;
