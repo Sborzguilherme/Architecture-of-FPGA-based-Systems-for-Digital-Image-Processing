@@ -8,7 +8,7 @@ from bitstring import Bits
 import math
 
 # Fixed-point format (8.12)
-MSB = 8                                         # Bit signal + integer part (0 + 8)
+MSB = 10                                         # Bit signal + integer part (0 + 8)
 LSB = 8                                         # Fract part
 
 # Maximum value (considering 0 bits for signal)
@@ -52,13 +52,14 @@ def fixed_to_float(val:str, str_format=16) -> float:
 # ------------------------- Function to convert float to integer (fixed point notation) ------------------------------ #
 def float_to_integer_fx(num):
     num *= (2 ** (LSB))    # Step 1 from the algorithm
-    return round(num)           # Step 2 from the algorithm
+    return round(num)      # Step 2 from the algorithm
 # ----------------------------------------- Fixed-Point Multiplication ----------------------------------------------- #
 def fixed_point_mult(a, b):
-    mult = (a/(2**LSB)) * (b/(2**LSB))
-    return mult
+    mult = (a * b)/(2**LSB)
+    return mult/(2**LSB)
 
 #print(float_to_fixed(0.20417996))
+#print(fixed_to_float('000010100101000100', 2))
 
 
 

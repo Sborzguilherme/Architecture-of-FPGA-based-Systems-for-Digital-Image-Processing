@@ -36,8 +36,6 @@ architecture arch of SG_Filter_3 is
 
   signal w_BUF_ENA_WRI : std_logic_vector(2 downto 0) := (others => '0');
 
-  signal w_MULT  : fixed_vector(2 downto 0); -- Holds the product between pixels and coefs
-
   signal r_REG_0 : fixed_vector(4 downto 0);
   signal r_REG_1 : fixed_vector(1 downto 0);
   signal r_REG_2 : fixed_vector(1 downto 0);
@@ -63,10 +61,15 @@ architecture arch of SG_Filter_3 is
     end process;
 
 ------------------------------ STAGE 0 -----------------------------------------
+-- Reordering the Filter
+-- Sum values that will be multiplied by the same value
+  -- 0x0013
   w_STAGE_0(0) <= i_KERNEL(0) + i_KERNEL(2);
   w_STAGE_0(1) <= i_KERNEL(6) + i_KERNEL(8);
+  -- 0x0020
   w_STAGE_0(2) <= i_KERNEL(1) + i_KERNEL(3);
   w_STAGE_0(3) <= i_KERNEL(5) + i_KERNEL(7);
+  -- The central position is multiplied by a differrent value
   w_STAGE_0(4) <= i_KERNEL(4) * i_WEIGHTS(4);
 
   g_STAGE_0 : for i in 0 to 4 generate
@@ -83,7 +86,7 @@ architecture arch of SG_Filter_3 is
 ------------------------------ STAGE 1 -----------------------------------------
   g_STAGE_1 : for i in 0 to 1 generate
     w_STAGE_1(i) <= r_REG_0(2*i) + r_REG_0((2*i)+1);
-    
+
     Reg_S1 : Reg
     port map (
       i_CLK  => i_CLK,
@@ -105,9 +108,11 @@ end generate;
       o_DOUT => r_4_S0_S1
     );
 ------------------------------ STAGE 2 -----------------------------------------
-  g_STAGE_2 : for i in 0 to 1 generate
-    w_STAGE_2(i) <= r_REG_1(i) * i_WEIGHTS(i);
 
+w_STAGE_2(0) <= r_REG_1(0) * i_WEIGHTS(0);
+w_STAGE_2(1) <= r_REG_1(1) * i_WEIGHTS(1);
+
+  g_STAGE_2 : for i in 0 to 1 generate
     Reg_S2 : Reg
     port map (
       i_CLK  => i_CLK,

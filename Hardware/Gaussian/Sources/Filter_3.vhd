@@ -61,6 +61,7 @@ architecture arch of Filter_3 is
     end process;
 
     -- MULTIPLICATION
+------------------------------ STAGE 0 -----------------------------------------
     g_STAGE_0 : for i in 0 to 8 generate
       w_STAGE_0(i) <= i_KERNEL(i) * i_WEIGHTS(i);
 
@@ -74,9 +75,7 @@ architecture arch of Filter_3 is
 			  o_DOUT => r_REG_0(i)
 			);
     end generate;
-
-    -- ADDER TREE
-      -- FIRST STAGE
+------------------------------ STAGE 1 -----------------------------------------
       g_STAGE_1 : for i in 0 to 3 generate
         w_STAGE_1(i) <= r_REG_0(2*i) + r_REG_0((2*i)+1);
 
@@ -101,19 +100,19 @@ architecture arch of Filter_3 is
           o_DOUT => r_REG_8_S1
         );
 
-      -- SECOND STAGE
-      g_STAGE_2 : for i in 0 to 1 generate
-        w_STAGE_2(i) <= r_REG_1(2*i) + r_REG_1((2*i)+1);
+------------------------------ STAGE 2 -----------------------------------------
+    g_STAGE_2 : for i in 0 to 1 generate
+      w_STAGE_2(i) <= r_REG_1(2*i) + r_REG_1((2*i)+1);
 
-        Reg_S2 : Reg
-        port map (
-          i_CLK  => i_CLK,
-          i_RST  => i_RST,
-          i_ENA  => w_BUF_ENA_WRI(1),
-          i_CLR  => '0',
-          i_DIN  => w_STAGE_2(i),
-          o_DOUT => r_REG_2(i)
-        );
+      Reg_S2 : Reg
+      port map (
+        i_CLK  => i_CLK,
+        i_RST  => i_RST,
+        i_ENA  => w_BUF_ENA_WRI(1),
+        i_CLR  => '0',
+        i_DIN  => w_STAGE_2(i),
+        o_DOUT => r_REG_2(i)
+      );
     end generate;
 
     Reg_8_S2 : Reg
@@ -126,7 +125,7 @@ architecture arch of Filter_3 is
       o_DOUT => r_REG_8_S2
     );
 
-    -- THIRD STAGE
+------------------------------ STAGE 3 -----------------------------------------
     w_STAGE_3 <= r_REG_2(0) + r_REG_2(1);
 
     Reg_S3 : Reg

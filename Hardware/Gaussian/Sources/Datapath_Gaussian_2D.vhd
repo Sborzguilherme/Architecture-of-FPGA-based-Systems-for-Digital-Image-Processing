@@ -126,7 +126,20 @@ g_filter : if p_KERNEL_HEIGHT = 3 generate
     );
   elsif p_KERNEL_HEIGHT = 5 generate
 
-    Filter_5_i : Filter_5
+    -- Filter_5_i : Filter_5
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_5,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
+
+    SG_Filter_5_i : SG_Filter_5
     generic map (
       p_FILTER_SIZE => c_KERNEL_SIZE
     )
@@ -137,7 +150,7 @@ g_filter : if p_KERNEL_HEIGHT = 3 generate
       i_KERNEL  => w_DRA_OUT,
       i_WEIGHTS => c_Gaussian_Kernel_5,
       o_RESULT  => o_OUT_PIXEL
-    );
+      );
 
   else generate
     Filter_7_i : Filter_7

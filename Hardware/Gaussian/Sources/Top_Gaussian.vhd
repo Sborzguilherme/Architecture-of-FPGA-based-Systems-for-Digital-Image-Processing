@@ -141,8 +141,11 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
       o_PIX_RDY <= w_BUF_RDY(3);
       o_DONE    <= w_BUF_DONE(3);
     elsif p_KERNEL_HEIGHT = 5 generate
-       o_PIX_RDY <= w_BUF_RDY(4);
-       o_DONE    <= w_BUF_DONE(4);
+       -- o_PIX_RDY <= w_BUF_RDY(4);
+       -- o_DONE    <= w_BUF_DONE(4);
+       o_PIX_RDY <= w_BUF_RDY(5);
+       o_DONE    <= w_BUF_DONE(5);
+
     else generate
        o_PIX_RDY <= w_BUF_RDY(5);
        o_DONE    <= w_BUF_DONE(5);
