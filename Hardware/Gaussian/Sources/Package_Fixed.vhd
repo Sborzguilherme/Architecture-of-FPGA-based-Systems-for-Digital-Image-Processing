@@ -6,7 +6,7 @@ package Package_Fixed is
 
 -- Components instantiation
   ---------------- Size Constants -------------
-  constant MSB : integer := 10;
+  constant MSB : integer := 11;
   constant LSB : integer := 8;
 --------------------- Type declaration --------------------
   subtype fixed is std_logic_vector(MSB+LSB-1 downto 0);  -- Fixed-point type

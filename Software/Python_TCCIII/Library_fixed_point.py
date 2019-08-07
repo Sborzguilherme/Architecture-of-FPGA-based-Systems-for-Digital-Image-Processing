@@ -8,7 +8,7 @@ from bitstring import Bits
 import math
 
 # Fixed-point format (8.12)
-MSB = 10                                         # Bit signal + integer part (0 + 8)
+MSB = 11                                         # Bit signal + integer part (0 + 8)
 LSB = 8                                         # Fract part
 
 # Maximum value (considering 0 bits for signal)

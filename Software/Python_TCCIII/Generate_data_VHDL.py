@@ -54,6 +54,6 @@ def Generate_string_constant(size, sigma):
     f.close()
 
 #Generate_string_constant(7, 1)
-Generate_img_VHDL("lena", (7,7), 2, 16)
+#Generate_img_VHDL("lena", (7,7), 2, 16)
 
 

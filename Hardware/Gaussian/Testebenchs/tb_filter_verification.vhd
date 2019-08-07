@@ -44,12 +44,12 @@ p_CNT_CYCLES: process
 end process;
 
   p_INPUT : process
-    variable count : fixed := x"0000";
+    variable count : fixed := "000000000000000000";
   begin
     wait for period;
     while done = '0' loop
       pix_in <= count;
-      count := count + x"0001";
+      count := count + "000000000000000001";
       wait for period;
 
     end loop;
@@ -60,8 +60,8 @@ end process;
 
 Top_Gaussian_i : Top_Gaussian
 generic map (
-  p_KERNEL_HEIGHT    => 3,    -- Virtual Board  = 1 Col at Start + 1 Col at End
-  p_KERNEL_WIDTH     => 3,    --                  1 Lin at Start + 1 Lin at End
+  p_KERNEL_HEIGHT    => 5,    -- Virtual Board  = 1 Col at Start + 1 Col at End
+  p_KERNEL_WIDTH     => 5,    --                  1 Lin at Start + 1 Lin at End
   p_INPUT_IMG_WIDTH  => 10,  -- img [512x512] with virtual board
   p_INPUT_IMG_HEIGHT => 10
 )

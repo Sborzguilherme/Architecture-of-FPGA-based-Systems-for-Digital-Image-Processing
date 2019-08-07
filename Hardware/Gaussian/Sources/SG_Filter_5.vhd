@@ -2,21 +2,10 @@
 -- Project: Gaussian Filter
 -- Author: Guilherme Sborz
 -- Date: 06/08/2019
--- File: SG_Filter_3.vhd
+-- File: SG_Filter_5.vhd
 
 -- Fixed-Point MAC
 -- 5x5 kernel
--- pipeline
--- Multipliers reorganized
------------------------------------------------------------
------------------------------------------------------------
--- Project: Gaussian Filter
--- Author: Guilherme Sborz
--- Date: 01/08/2019
--- File: SG_Filter_3.vhd
-
--- Fixed-Point MAC
--- 3x3 kernel
 -- pipeline
 -- Multipliers reorganized
 -----------------------------------------------------------
@@ -68,7 +57,7 @@ architecture arch of SG_Filter_5 is
     shift_left_signals : process(i_CLK, i_ENA_REG)
     begin
         if(rising_edge(i_CLK)) then
-          w_BUF_ENA_WRI(3 downto 1) <= w_BUF_ENA_WRI(2 downto 0);
+          w_BUF_ENA_WRI(4 downto 1) <= w_BUF_ENA_WRI(3 downto 0);
           w_BUF_ENA_WRI(0) <= i_ENA_REG;
         end if;
     end process;
@@ -145,7 +134,7 @@ end generate;
   w_STAGE_2(4) <= r_REG_1(5);
   w_STAGE_2(5) <= r_12_S0_S1;
 
-  g_STAGE_2 : for i in 0 to 4 generate
+  g_STAGE_2 : for i in 0 to 5 generate
     Reg_S2 : Reg
     port map (
       i_CLK  => i_CLK,
