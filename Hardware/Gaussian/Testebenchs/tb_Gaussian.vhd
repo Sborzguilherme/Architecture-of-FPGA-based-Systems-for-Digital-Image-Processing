@@ -49,7 +49,7 @@ p_READ : process
 
     begin
     wait for period*2;
-    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_7.txt", READ_MODE);
+    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_7_8.8.txt", READ_MODE);
     while not endfile(fil_in) loop
       readline(fil_in, v_LINE);
       read(v_LINE, v_data);

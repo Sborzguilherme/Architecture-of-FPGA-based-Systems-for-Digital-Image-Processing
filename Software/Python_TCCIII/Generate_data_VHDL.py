@@ -53,7 +53,46 @@ def Generate_string_constant(size, sigma):
         f.write(string)
     f.close()
 
+def Generate_LUT_constants(kernel_size):
+
+    kernel = Lib_op.gaussian_kernel_gen(kernel_size, 1)
+
+    kernel = kernel.reshape(len(kernel[0])*len(kernel))
+
+    fx_kernel = []
+    for i in range(len(kernel)):
+        fx_kernel.append(Lib_fx.float_to_fixed(kernel[i]))
+
+    mylist = list(dict.fromkeys(fx_kernel)) # Remove duplicated items
+
+    Lut = [[] for i in range(len(mylist))]
+
+    for i in range(len(mylist)):
+        a = Lib_fx.fixed_to_float(mylist[i])
+        a = Lib_fx.float_to_integer_fx(a)
+        for j in range(256):
+            result = Lib_fx.fixed_point_mult(a, j)
+            fx_result = Lib_fx.float_to_fixed(result*(2**8))
+            Lut[i].append(fx_result[2:])
+
+    string = ''
+    for i in range(len(Lut)):
+        cont = 0
+        string += "constant c_Gaussian_Lut_"+ str(kernel_size)+"_W" + str(i) + ": fixed_vector(255 downto 0):= (\n"
+        for j in range(len(Lut[0])):
+            if(cont == 5):
+                string+= str(j)+" => x\"" + Lut[i][j] + "\",\n"
+                cont=0
+            else:
+                string+= str(j)+" => x\"" + Lut[i][j] + "\",\t"
+                cont+=1
+        string = string[:-2] + ");\n\n"
+
+    with open("lut.txt", "w") as f:
+        f.write(string)
+    f.close()
+
 #Generate_string_constant(7, 1)
 #Generate_img_VHDL("lena", (7,7), 2, 16)
-
+Generate_LUT_constants(7)
 

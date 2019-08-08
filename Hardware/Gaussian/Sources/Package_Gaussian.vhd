@@ -140,6 +140,48 @@ package Package_Gaussian is
   );
   end component Filter_7;
 
+  component Filter_Lut_3
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component Filter_Lut_3;
+
+  component Filter_LUT_5
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component Filter_LUT_5;
+
+  component Filter_LUT_7
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component Filter_LUT_7;
+
   component Flip_Flop
   port (
     i_CLK  : in  std_logic;
@@ -150,6 +192,20 @@ package Package_Gaussian is
     o_DOUT : out std_logic
   );
   end component Flip_Flop;
+
+  component LUT
+  generic (
+    p_NUMBER_OF_PORTS : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_RD  : in  std_logic;
+    i_CONTENT : in  fixed_vector(255 downto 0);
+    i_ADDR    : in  addr_vector(p_NUMBER_OF_PORTS-1 downto 0);
+    o_DATA    : out fixed_vector(p_NUMBER_OF_PORTS-1 downto 0)
+  );
+  end component LUT;
 
   component Reg
   port (

@@ -14,10 +14,10 @@ use work.Package_Fixed.all;
 
 entity Top_Gaussian is
   generic(
-      p_KERNEL_HEIGHT    : integer := 3;
-      p_KERNEL_WIDTH     : integer := 3;
-      p_INPUT_IMG_WIDTH  : integer := 514;
-      p_INPUT_IMG_HEIGHT : integer := 514
+      p_KERNEL_HEIGHT    : integer := 7;
+      p_KERNEL_WIDTH     : integer := 7;
+      p_INPUT_IMG_WIDTH  : integer := 518;
+      p_INPUT_IMG_HEIGHT : integer := 518
   );
   port(
       i_CLK         : in std_logic;
@@ -138,17 +138,17 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
     );
 
     -- g_output_singals : if p_KERNEL_HEIGHT = 3 generate
-      o_PIX_RDY <= w_BUF_RDY(3);
-      o_DONE    <= w_BUF_DONE(3);
+      -- o_PIX_RDY <= w_BUF_RDY(3);
+      -- o_DONE    <= w_BUF_DONE(3);
     -- elsif p_KERNEL_HEIGHT = 5 generate
-    --    -- o_PIX_RDY <= w_BUF_RDY(4);      -- Normal Filter
-    --    -- o_DONE    <= w_BUF_DONE(4);
+       -- o_PIX_RDY <= w_BUF_RDY(4);      -- Normal Filter
+       -- o_DONE    <= w_BUF_DONE(4);
     --    o_PIX_RDY <= w_BUF_RDY(5);         -- Special Filter
     --    o_DONE    <= w_BUF_DONE(5);
     --
     -- else generate
-       -- o_PIX_RDY <= w_BUF_RDY(5);
-       -- o_DONE    <= w_BUF_DONE(5);
+       o_PIX_RDY <= w_BUF_RDY(5);
+       o_DONE    <= w_BUF_DONE(5);
     -- end generate;
 
     o_OUT_PIXEL <= r_OUT_PIX;
