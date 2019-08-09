@@ -96,7 +96,7 @@ begin
     o_OUT_KERNEL  => w_DRA_OUT
   );
 
---g_filter : if p_KERNEL_HEIGHT = 3 generate
+g_filter : if p_KERNEL_HEIGHT = 3 generate
 
   --Operation
     -- Filter_3_i : Filter_3
@@ -111,18 +111,18 @@ begin
     --   i_WEIGHTS => c_Gaussian_Kernel_3,
     --   o_RESULT  => o_OUT_PIXEL
     -- );
-    -- Filter_Lut_3_i : Filter_Lut_3
-    -- generic map (
-    --   p_FILTER_SIZE => c_KERNEL_SIZE
-    -- )
-    -- port map (
-    --   i_CLK     => i_CLK,
-    --   i_RST     => i_RST,
-    --   i_ENA_REG => w_ENA_WR,
-    --   i_KERNEL  => w_DRA_OUT,
-    --   i_WEIGHTS => c_Gaussian_Kernel_3,
-    --   o_RESULT  => o_OUT_PIXEL
-    -- );
+    Filter_Lut_3_i : Filter_Lut_3
+    generic map (
+      p_FILTER_SIZE => c_KERNEL_SIZE
+    )
+    port map (
+      i_CLK     => i_CLK,
+      i_RST     => i_RST,
+      i_ENA_REG => w_ENA_WR,
+      i_KERNEL  => w_DRA_OUT,
+      i_WEIGHTS => c_Gaussian_Kernel_3,
+      o_RESULT  => o_OUT_PIXEL
+    );
 
     -- SG_Filter_3_i : SG_Filter_3
     -- generic map (
@@ -136,22 +136,9 @@ begin
     --   i_WEIGHTS => c_Gaussian_Kernel_3,
     --   o_RESULT  => o_OUT_PIXEL
     -- );
-  -- elsif p_KERNEL_HEIGHT = 5 generate
-  --
-  --   -- Filter_5_i : Filter_5
-  --   -- generic map (
-  --   --   p_FILTER_SIZE => c_KERNEL_SIZE
-  --   -- )
-  --   -- port map (
-  --   --   i_CLK     => i_CLK,
-  --   --   i_RST     => i_RST,
-  --   --   i_ENA_REG => w_ENA_WR,
-  --   --   i_KERNEL  => w_DRA_OUT,
-  --   --   i_WEIGHTS => c_Gaussian_Kernel_5,
-  --   --   o_RESULT  => o_OUT_PIXEL
-  --   -- );
-  --
-    -- Filter_LUT_5_i : Filter_LUT_5
+  elsif p_KERNEL_HEIGHT = 5 generate
+
+    -- Filter_5_i : Filter_5
     -- generic map (
     --   p_FILTER_SIZE => c_KERNEL_SIZE
     -- )
@@ -163,47 +150,60 @@ begin
     --   i_WEIGHTS => c_Gaussian_Kernel_5,
     --   o_RESULT  => o_OUT_PIXEL
     -- );
-  --
-  --   -- SG_Filter_5_i : SG_Filter_5
-  --   -- generic map (
-  --   --   p_FILTER_SIZE => c_KERNEL_SIZE
-  --   -- )
-  --   -- port map (
-  --   --   i_CLK     => i_CLK,
-  --   --   i_RST     => i_RST,
-  --   --   i_ENA_REG => w_ENA_WR,
-  --   --   i_KERNEL  => w_DRA_OUT,
-  --   --   i_WEIGHTS => c_Gaussian_Kernel_5,
-  --   --   o_RESULT  => o_OUT_PIXEL
-  --   --   );
-  --
-  -- else generate
-  --   Filter_7_i : Filter_7
-  --   generic map (
-  --     p_FILTER_SIZE => c_KERNEL_SIZE
-  --   )
-  --   port map (
-  --     i_CLK     => i_CLK,
-  --     i_RST     => i_RST,
-  --     i_ENA_REG => w_ENA_WR,
-  --     i_KERNEL  => w_DRA_OUT,
-  --     i_WEIGHTS => c_Gaussian_Kernel_7,
-  --     o_RESULT  => o_OUT_PIXEL
-  --   );
-  --
-  --   -- SG_Filter_7_i : SG_Filter_7
-  --   -- generic map (
-  --   --   p_FILTER_SIZE => c_KERNEL_SIZE
-  --   -- )
-  --   -- port map (
-  --   --   i_CLK     => i_CLK,
-  --   --   i_RST     => i_RST,
-  --   --   i_ENA_REG => w_ENA_WR,
-  --   --   i_KERNEL  => w_DRA_OUT,
-  --   --   i_WEIGHTS => c_Gaussian_Kernel_7,
-  --   --   o_RESULT  => o_OUT_PIXEL
-  --   -- );
-  --
+
+    Filter_LUT_5_i : Filter_LUT_5
+    generic map (
+      p_FILTER_SIZE => c_KERNEL_SIZE
+    )
+    port map (
+      i_CLK     => i_CLK,
+      i_RST     => i_RST,
+      i_ENA_REG => w_ENA_WR,
+      i_KERNEL  => w_DRA_OUT,
+      i_WEIGHTS => c_Gaussian_Kernel_5,
+      o_RESULT  => o_OUT_PIXEL
+    );
+
+    -- SG_Filter_5_i : SG_Filter_5
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_5,
+    --   o_RESULT  => o_OUT_PIXEL
+    --   );
+
+  else generate
+    -- Filter_7_i : Filter_7
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_7,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
+
+    -- SG_Filter_7_i : SG_Filter_7
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_7,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
+
   Filter_LUT_7_i : Filter_LUT_7
     generic map (
     p_FILTER_SIZE => c_KERNEL_SIZE
@@ -217,7 +217,7 @@ begin
     o_RESULT  => o_OUT_PIXEL
     );
 
-  -- end generate;
+  end generate;
   -------------------------- COMPARERS AND COUNTERS ------------------------------
  -- Only counts when a valid pixel arrives
   w_ENA_BF          <= i_ENA_CNT_BUF_FIL      and i_VALID_PIXEL;

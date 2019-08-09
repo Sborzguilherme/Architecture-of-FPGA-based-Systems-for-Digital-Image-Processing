@@ -93,9 +93,6 @@ architecture arch of Filter_LUT_7 is
         w_ADDR_1((i/20)+1) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
         r_REG_0(i) <= w_DATA_1((i/20)+1);
 
-      elsif(i=9 or i=11)  generate
-        w_ADDR_2(i/11) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
-        r_REG_0(i) <= w_DATA_2(i/11);
       elsif(i=9 or i=11)  generate  -- 0, 1
         w_ADDR_2(i/11) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
         r_REG_0(i) <= w_DATA_2(i/11);
@@ -107,7 +104,7 @@ architecture arch of Filter_LUT_7 is
         r_REG_0(i) <= w_DATA_2((i/16)+3);
       elsif (i=37 or i=39) generate -- 6,7
         w_ADDR_2((i/19)+5) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
-        r_REG_0(i) <= w_DATA_2((i/16)+5);
+        r_REG_0(i) <= w_DATA_2((i/19)+5);
 
       elsif(i=10 or i=22) generate  -- 0, 1
         w_ADDR_3(i/22) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
@@ -121,7 +118,7 @@ architecture arch of Filter_LUT_7 is
         r_REG_0(i) <= w_DATA_4(i/18);
       elsif (i=30 or i=32) generate
         w_ADDR_4((i/16)+1) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);
-        r_REG_0(i) <= w_DATA_4((i/18)+1);
+        r_REG_0(i) <= w_DATA_4((i/16)+1);
 
       elsif(i=17 or i=23) generate
         w_ADDR_5(i/23) <= i_KERNEL(i)(MSB+LSB-1 downto LSB);

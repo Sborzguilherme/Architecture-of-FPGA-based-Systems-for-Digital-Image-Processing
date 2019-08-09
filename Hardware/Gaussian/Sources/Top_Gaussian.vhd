@@ -56,19 +56,19 @@ architecture arch of Top_Gaussian is
     signal w_BUF_DONE             : std_logic_vector(5 downto 0) := (others=>'0');
     signal w_BUF_RDY              : std_logic_vector(5 downto 0) := (others=>'0');
     -- Signals to test in Quartus
-    signal r_REG_OUT				    : fixed;
-	  signal r_IN_PIX 			      : fixed;
-	  signal r_OUT_PIX 			    : fixed;
+    signal r_REG_OUT				      : fixed;
+	  signal r_IN_PIX 			        : fixed;
+	  signal r_OUT_PIX 			        : fixed;
 
 begin
 
-registers : process(i_CLK)
-  begin
-    if rising_edge(i_CLK) then
-      r_IN_PIX <= i_INPUT_PIXEL;
-      r_OUT_PIX <= r_REG_OUT;
-    end if;
-  end process;
+-- registers : process(i_CLK)
+--   begin
+--     if rising_edge(i_CLK) then
+--       r_IN_PIX <= i_INPUT_PIXEL;
+--       r_OUT_PIX <= r_REG_OUT;
+--     end if;
+--   end process;
 
 shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
   begin
@@ -92,8 +92,8 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
   port map (
     i_CLK             => i_CLK,
     i_RST             => i_RST,
-    i_INPUT_PIXEL     => r_IN_PIX,
-    --i_INPUT_PIXEL     => i_INPUT_PIXEL,
+    --i_INPUT_PIXEL     => r_IN_PIX,
+    i_INPUT_PIXEL     => i_INPUT_PIXEL,
     i_VALID_PIXEL     => i_VALID_PIXEL,
     i_ENA_CNT_KER_TOT => w_ENA_CNT_KER_TOT,
     i_CLR_CNT_KER_TOT => w_CLR_CNT_KER_TOT,
@@ -109,8 +109,8 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
     o_MAX_KER_ROW     => w_MAX_KER_ROW,
     o_MAX_INV_KER     => w_MAX_INV_KER,
     o_BUFFERS_FILLED  => w_BUFFERS_FILLED,
-    o_OUT_PIXEL         => r_REG_OUT
-    --o_OUT_PIXEL         => o_OUT_PIXEL
+    --o_OUT_PIXEL         => r_REG_OUT
+    o_OUT_PIXEL         => o_OUT_PIXEL
   );
 
     Control_Convolution_i : Control_Convolution
@@ -137,20 +137,19 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
       o_DONE            => w_DONE
     );
 
-    -- g_output_singals : if p_KERNEL_HEIGHT = 3 generate
-      -- o_PIX_RDY <= w_BUF_RDY(3);
-      -- o_DONE    <= w_BUF_DONE(3);
-    -- elsif p_KERNEL_HEIGHT = 5 generate
-       -- o_PIX_RDY <= w_BUF_RDY(4);      -- Normal Filter
-       -- o_DONE    <= w_BUF_DONE(4);
-    --    o_PIX_RDY <= w_BUF_RDY(5);         -- Special Filter
-    --    o_DONE    <= w_BUF_DONE(5);
-    --
-    -- else generate
+    g_output_singals : if p_KERNEL_HEIGHT = 3 generate
+      o_PIX_RDY <= w_BUF_RDY(3);
+      o_DONE    <= w_BUF_DONE(3);
+    elsif p_KERNEL_HEIGHT = 5 generate
+       o_PIX_RDY <= w_BUF_RDY(4);      -- Normal Filter
+       o_DONE    <= w_BUF_DONE(4);
+       -- o_PIX_RDY <= w_BUF_RDY(5);   -- Special Filter
+       -- o_DONE    <= w_BUF_DONE(5);
+    else generate
        o_PIX_RDY <= w_BUF_RDY(5);
        o_DONE    <= w_BUF_DONE(5);
-    -- end generate;
+    end generate;
 
-    o_OUT_PIXEL <= r_OUT_PIX;
+    -- o_OUT_PIXEL <= r_OUT_PIX;
 
 end architecture;
