@@ -8,6 +8,49 @@ use work.Package_Fixed.all;
 package Package_Gaussian is
 
 -- Components instantiation
+
+  component Apx_FA_1_bit
+  port (
+    i_A    : in  std_logic;
+    i_B    : in  std_logic;
+    i_Cin  : in  std_logic;
+    o_SUM  : out std_logic;
+    o_Cout : out std_logic
+  );
+  end component Apx_FA_1_bit;
+
+  component Apx_FA_16_bit
+  port (
+    i_A : in  fixed;
+    i_B : in  fixed;
+    o_SUM   : out fixed
+  );
+  end component Apx_FA_16_bit;
+
+  component Apx_Mult_2_bit
+  port (
+    i_A    : in  std_logic_vector(1 downto 0);
+    i_B    : in  std_logic_vector(1 downto 0);
+    o_MULT : out std_logic_vector(2 downto 0)
+  );
+  end component Apx_Mult_2_bit;
+
+  component Apx_Mult_4_bit
+  port (
+    i_A    : in  std_logic_vector(3 downto 0);
+    i_B    : in  std_logic_vector(3 downto 0);
+    o_MULT : out std_logic_vector(7 downto 0)
+  );
+  end component Apx_Mult_4_bit;
+
+  component Apx_Mult_8_bit
+  port (
+    i_A    : in  std_logic_vector(7 downto 0);
+    i_B    : in  std_logic_vector(7 downto 0);
+    o_MULT : out std_logic_vector(15 downto 0)
+  );
+  end component Apx_Mult_8_bit;
+
   component Comparator
   port (
     i_A  : in  integer;
