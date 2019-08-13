@@ -49,7 +49,7 @@ p_READ : process
 
     begin
     wait for period*2;
-    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_7_8.8.txt", READ_MODE);
+    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_3_8.8.txt", READ_MODE);
     while not endfile(fil_in) loop
       readline(fil_in, v_LINE);
       read(v_LINE, v_data);
@@ -63,7 +63,7 @@ p_WRITE : process
   variable v_line : line;
 begin
   wait for period;
-  file_open(fil_out, "../../../Data/Output_Data/VB_2/16_bits/lena_7.txt", WRITE_MODE);
+  file_open(fil_out, "../../../Data/Output_Data/VB_2/16_bits/lena_3_APX.txt", WRITE_MODE);
   while done = '0' loop
     if pix_rdy = '1' then
         write(v_line, pix_out);
@@ -79,10 +79,10 @@ end process;
 
 Top_Gaussian_i : Top_Gaussian
 generic map (
-  p_KERNEL_HEIGHT    => 7,    -- Virtual Board  = 1 Col at Start + 1 Col at End
-  p_KERNEL_WIDTH     => 7,    --                  1 Lin at Start + 1 Lin at End
-  p_INPUT_IMG_WIDTH  => 518,  -- img [512x512] with virtual board
-  p_INPUT_IMG_HEIGHT => 518
+  p_KERNEL_HEIGHT    => 3,    -- Virtual Board  = 1 Col at Start + 1 Col at End
+  p_KERNEL_WIDTH     => 3,    --                  1 Lin at Start + 1 Lin at End
+  p_INPUT_IMG_WIDTH  => 514,  -- img [512x512] with virtual board
+  p_INPUT_IMG_HEIGHT => 514
 )
 port map (
   i_CLK         => clk,

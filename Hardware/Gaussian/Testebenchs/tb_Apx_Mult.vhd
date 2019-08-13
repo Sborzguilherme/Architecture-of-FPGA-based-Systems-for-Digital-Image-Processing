@@ -12,35 +12,39 @@ end entity;
 architecture arch of tb_Apx_Mult is
 
     constant period : time := 10 ps;
-
-    signal a    : std_logic_vector(7 downto 0) := (others=>'0');
-    signal b    : std_logic_vector(7 downto 0) := (others=>'0');
-    signal mult : std_logic_vector(15 downto 0);
+    signal a        : fixed := (others=>'0');
+    signal b        : fixed := (others=>'0');
+    signal a_std    : fixed := (others=>'0');
+    signal b_std    : fixed := (others=>'0');
+    signal mult     : fixed;
 
 begin
+
+  a_std <= std_logic_vector(a);
+  b_std <= std_logic_vector(b);
 
 u_test : process is
   begin
 
-    a <= "01010101";
-    b <= "10101111";
+    a <= x"0220";
+    b <= x"4544";
     wait for period;
 
-    -- a <= "0101";
-    -- b <= "1111";
-    -- wait for period;
-    --
-    -- a <= "1101";
-    -- b <= "1001";
-    -- wait for period;
-    --
-    -- a <= "1110";
-    -- b <= "1110";
-    -- wait for period;
-    --
-    -- a <= "0111";
-    -- b <= "0111";
-    -- wait for period;
+    a <= x"0101";
+    b <= x"1111";
+    wait for period;
+
+    a <= x"1101";
+    b <= x"1001";
+    wait for period;
+
+    a <= x"1110";
+    b <= x"1110";
+    wait for period;
+
+    a <= x"0111";
+    b <= x"0111";
+    wait for period;
 
   end process;
 
@@ -50,21 +54,12 @@ u_test : process is
 --   wait;
 -- end process;
 
-  -- Apx_FA_1_bit_i : Apx_FA_1_bit
-  -- port map (
-  --   i_A    => a,
-  --   i_B    => b,
-  --   i_Cin  => cin,
-  --   o_SUM  => sum,
-  --   o_Cout => cout
-  -- );
 
-  Apx_Mult_8_bit_i : Apx_Mult_8_bit
+  Apx_Mult_16_bit_i : Apx_Mult_16_bit
   port map (
-    i_A    => a,
-    i_B    => b,
+    i_A    => a_std,
+    i_B    => b_std,
     o_MULT => mult
   );
-
 
 end architecture;

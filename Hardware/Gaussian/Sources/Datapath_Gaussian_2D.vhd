@@ -111,7 +111,21 @@ g_filter : if p_KERNEL_HEIGHT = 3 generate
     --   i_WEIGHTS => c_Gaussian_Kernel_3,
     --   o_RESULT  => o_OUT_PIXEL
     -- );
-    Filter_Lut_3_i : Filter_Lut_3
+    
+    -- Filter_Lut_3_i : Filter_Lut_3
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_3,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
+
+    Filter_Apx_3_i : Filter_Apx_3
     generic map (
       p_FILTER_SIZE => c_KERNEL_SIZE
     )
@@ -123,6 +137,7 @@ g_filter : if p_KERNEL_HEIGHT = 3 generate
       i_WEIGHTS => c_Gaussian_Kernel_3,
       o_RESULT  => o_OUT_PIXEL
     );
+
 
     -- SG_Filter_3_i : SG_Filter_3
     -- generic map (

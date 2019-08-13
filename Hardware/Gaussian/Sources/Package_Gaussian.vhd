@@ -51,6 +51,14 @@ package Package_Gaussian is
   );
   end component Apx_Mult_8_bit;
 
+  component Apx_Mult_16_bit
+  port (
+    i_A    : in  fixed;
+    i_B    : in  fixed;
+    o_MULT : out fixed
+  );
+  end component Apx_Mult_16_bit;
+
   component Comparator
   port (
     i_A  : in  integer;
@@ -182,6 +190,21 @@ package Package_Gaussian is
     o_RESULT  : out fixed
   );
   end component Filter_7;
+
+  component Filter_Apx_3
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK     : in  std_logic;
+    i_RST     : in  std_logic;
+    i_ENA_REG : in  std_logic;
+    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_RESULT  : out fixed
+  );
+  end component Filter_Apx_3;
+
 
   component Filter_Lut_3
   generic (

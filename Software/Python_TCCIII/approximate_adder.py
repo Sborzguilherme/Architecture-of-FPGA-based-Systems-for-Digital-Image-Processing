@@ -1,11 +1,13 @@
 import Library_fixed_point as lib_fx
 import numpy as np
 
-def apx_sum(a, b, bits):
+# Input: Integer numbers in string format ("AAAA")
+# Output: Integer number in string format
+def apx_sum(a, b, bits=16):
 
     sum = np.zeros(bits)
-    a_bin = bin(int(a,bits))  # Convert hex value to bitstring
-    b_bin = bin(int(b,bits))
+    a_bin = bin(int(a,16))  # Convert hex value to bitstring
+    b_bin = bin(int(b,16))
 
     a_bin = a_bin[2:].zfill(bits)       # Remove chars 0b
     b_bin = b_bin[2:].zfill(bits)
@@ -17,18 +19,19 @@ def apx_sum(a, b, bits):
         i_A = int(a_bin[pos])
         i_B = int(b_bin[pos])
 
-        sum[pos] = int(cin &  ((i_A ^1) | i_B))
-        #print(pos, '- a = ', i_A, ', b = ', i_B, 'cin = ', cin , ', sum = ', sum[pos], end=', ')
+        sum[pos] = int(cin &  ((i_A ^1) | i_B)) # CIN AND ((NOT A) OR B)
+        #print(i, '- a = ', i_A, ', \tb = ', i_B, '\tcin = ', cin , ', \tsum = ', int(sum[pos]), end=', ')
         cin = i_A
-        #print('cout = ', cin)
+        #print('\tcout = ', cin)
 
     string = ''
     for i in sum:
         string += str(i)[0]     # Gets onçy the first position from float value (1.0 -> 1)
 
     return hex(int(string, 2))
-
-def apx_mult(a, b, bits):
+# Input:    Integer numbers
+# Output:   Float number (fixed-point format)
+def apx_mult(a, b, bits=16):
     # Truth table for the approximated multiplier
     lookup_table = {"0000" : '000', "0001" : '000', "0010" : '000', "0011" : '000',
                     "0100" : '000', "0101" : '001', "0110" : '010', "0111" : '011',
@@ -39,8 +42,8 @@ def apx_mult(a, b, bits):
     pairs_a = []
     pairs_b = []
 
-    a_bin = bin(int(a, bits))  # Convert hex value to bitstring
-    b_bin = bin(int(b, bits))
+    a_bin = bin(a)  # Convert hex value to bitstring
+    b_bin = bin(b)
 
     a_bin = a_bin[2:].zfill(bits)  # Remove chars 0b and fill with zeros until the number of bits is reached
     b_bin = b_bin[2:].zfill(bits)
@@ -81,14 +84,44 @@ def apx_mult(a, b, bits):
     result = result/(2**16)
     return result
 
-a_str = "0220"                                  # Hexadecimal values
-b_str = "4544"
 
-print("a = ", lib_fx.fixed_to_float(a_str))     # Values converted to fixed-point
-print("b = ", lib_fx.fixed_to_float(b_str))
+# Receive an array of values (kernel and weigths multiplied) and return the sum, imitating the hw implementation
+def adder_tree_3_apx(values):
+    stage_1 = [0]*4
+    stage_2 = [0]*2
+    stage_3 = 0
+
+    for i in range(len(stage_1)):
+        stage_1[i] = apx_sum(values[2 * i], values[(2 * i) + 1])
+
+    for i in range(len(stage_2)):
+        stage_2[i] = apx_sum(stage_1[2 * i] , stage_1[(2 * i) + 1])
+
+    stage_3 = apx_sum(stage_2[0] , stage_2[1])
+
+    return apx_sum(stage_3 , values[-1])
+
+
+# vector = ["0001"] * 9
+# print(vector)
+# print(adder_tree_3_apx(vector))
 #
-a = int(a_str,16)                               # Values as integers
-b = int(b_str,16)
-
-print("fx = ", lib_fx.fixed_point_mult(a, b))
-print("apx = ", apx_mult(a_str, b_str, 16))
+# a_str = "0008"                                  # Hexadecimal values
+# b_str = "0001"
+#
+# a_fx = lib_fx.fixed_to_float(a_str)
+# b_fx = lib_fx.fixed_to_float(b_str)
+#
+# print("a = ", a_fx)     # Values converted to fixed-point
+# print("b = ", b_fx)
+# print('True result = ', lib_fx.float_to_fixed(a_fx+b_fx))
+# #
+# a = int(a_str,16)                               # Values as integers
+# b = int(b_str,16)
+#
+#c = apx_sum(a_str, b_str, 16)
+# #d = apx_mult(a, b)
+# #print("fx = ", (a+b)/2**8)
+#print("Apx result = ", c)
+# #print("apx mult = ",lib_fx.float_to_fixed(d))
+# #print("APX FX = ", lib_fx.float_to_fixed(c))

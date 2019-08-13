@@ -52,7 +52,7 @@ def fixed_to_float(val:str, str_format=16) -> float:
 # ------------------------- Function to convert float to integer (fixed point notation) ------------------------------ #
 def float_to_integer_fx(num):
     num *= (2 ** (LSB))    # Step 1 from the algorithm
-    return round(num)      # Step 2 from the algorithm
+    return int(round(num))      # Step 2 from the algorithm
 # ----------------------------------------- Fixed-Point Multiplication ----------------------------------------------- #
 def fixed_point_mult(a, b):
     mult = (a * b)/(2**LSB)

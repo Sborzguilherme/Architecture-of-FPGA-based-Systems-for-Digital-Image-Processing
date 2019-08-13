@@ -6,6 +6,7 @@
 import numpy as np
 import math
 import Library_fixed_point as fx
+import approximate_adder as APX
 # ---------------------------------------- Treat virtual board ------------------------------------------------------- #
 # Parameters
 #   img: input numpy array
@@ -145,13 +146,38 @@ def fixed_point_convolution_2D(img, kernel, virtual_board):
 
     out_img = np.zeros([output_img_height, output_img_width])
 
-    for i in range(output_img_height):  # Run through img lines
-        for j in range(output_img_width):  # Run through img collumns
-            for k in range(len(kernel)):  # Run through kernel lines
+    for i in range(output_img_height):                                  # Run through img lines
+        for j in range(output_img_width):                               # Run through img columns
+            for k in range(len(kernel)):                                # Run through kernel lines
                 for l in range(len(kernel[0])):
                     img_fx = fx.float_to_integer_fx(img[i + k][j + l])  # Convert image value to int
                     kernel_fx = fx.float_to_integer_fx(kernel[k][l])    # Convert kernel value to int
                     out_img[i][j] += fx.fixed_point_mult(img_fx, kernel_fx)
     return out_img
 
+def APX_Convolution(img, kernel, virtual_board):
 
+    # Find kernel dimensions
+    kernel_height = len(kernel)
+    kernel_width = len(kernel[0])
+    # Treat virtual board as specified in the parameter
+    img = treat_virtual_board(img, kernel_height, kernel_width, virtual_board)
+
+    # Define dimensions for output img
+    output_img_width = len(img[0]) - (kernel_width - 1)
+    output_img_height = len(img) - (kernel_height - 1)
+
+    out_img = np.zeros([output_img_height, output_img_width])
+
+    for i in range(output_img_height):                                              # Run through img lines
+        for j in range(output_img_width):                                           # Run through img columns
+            aux = []
+            for k in range(len(kernel)):                                            # Run through kernel lines
+                for l in range(len(kernel[0])):
+                    img_fx = fx.float_to_integer_fx(img[i + k][j + l])              # Convert image value to int
+                    kernel_fx = fx.float_to_integer_fx(kernel[k][l])                # Convert kernel value to int
+                    aux.append(fx.float_to_fixed(APX.apx_mult(img_fx, kernel_fx)))  # Return a fixed-point value
+
+                    #print("IMG_FX = ", img_fx, "\tKernel_fx = ", kernel_fx, "\tAux_Mult = ", fx.float_to_fixed(aux_mult), "\t\tAux = ", aux)
+            out_img[i][j] = fx.fixed_to_float(APX.adder_tree_3_apx(aux))
+    return out_img
