@@ -41,7 +41,8 @@ architecture arch of Filter_Apx_3 is
   signal r_REG_2 : fixed_vector(1 downto 0);
   signal r_REG_3 : fixed;
 
-  signal w_STAGE_0 : array_vector(8 downto 0);  -- Kernel * weights
+  --signal w_STAGE_0 : array_vector(8 downto 0);  -- Kernel * weights
+  signal w_STAGE_0 : fixed_vector(8 downto 0);
   signal w_STAGE_1 : fixed_vector(3 downto 0);  -- w_STAGE_0(0 to 7) - 8 -> 4 // w_STAGE_0(8) not used
   signal w_STAGE_2 : fixed_vector(1 downto 0);  -- w_STAGE_1(0 to 3) - 4 -> 2 // w_STAGE_0(24 not used)
   signal w_STAGE_3 : fixed;
@@ -64,12 +65,14 @@ architecture arch of Filter_Apx_3 is
 ------------------------------ STAGE 0 -----------------------------------------
     g_STAGE_0 : for i in 0 to 8 generate
 
-      Apx_Mult_16_bit_s0 : Apx_Mult_16_bit
-      port map (
-        i_A    => std_logic_vector(i_WEIGHTS(i)),
-        i_B    => std_logic_vector(i_KERNEL(i)),
-        o_MULT => w_STAGE_0(i)
-      );
+      -- Apx_Mult_16_bit_s0 : Apx_Mult_16_bit
+      -- port map (
+      --   i_A    => std_logic_vector(i_WEIGHTS(i)),
+      --   i_B    => std_logic_vector(i_KERNEL(i)),
+      --   o_MULT => w_STAGE_0(i)
+      -- );
+
+      w_STAGE_0(i) <= i_WEIGHTS(i) * i_KERNEL(i);
 
 			Reg_S0 : Reg
 			port map (
@@ -77,7 +80,8 @@ architecture arch of Filter_Apx_3 is
 			  i_RST  => i_RST,
 			  i_ENA  => i_ENA_REG,
 			  i_CLR  => '0',
-			  i_DIN  => fixed(w_STAGE_0(i)),
+			  --i_DIN  => fixed(w_STAGE_0(i)),
+        i_DIN  => w_STAGE_0(i),
 			  o_DOUT => r_REG_0(i)
 			);
     end generate;
