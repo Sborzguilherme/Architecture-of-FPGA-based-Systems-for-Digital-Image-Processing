@@ -40,12 +40,12 @@ port(
   i_ENA_CNT_BUF_FIL     : in  std_logic;
   i_CLR_CNT_BUF_FIL     : in  std_logic;
   i_ENA_WRI_KER         : in  std_logic;
-  i_ENA_WRI_REG         : in  std_logic;    -- REMOVE
+  i_ENA_WRI_REG         : in  std_logic;    
   o_MAX_KER_TOT         : out std_logic;
   o_MAX_KER_ROW         : out std_logic;
   o_MAX_INV_KER         : out std_logic;
   o_BUFFERS_FILLED      : out std_logic;
-  o_OUT_PIXEL		          : out fixed
+  o_OUT_PIXEL		        : out fixed
 );
 end entity Datapath_Gaussian_2D;
 

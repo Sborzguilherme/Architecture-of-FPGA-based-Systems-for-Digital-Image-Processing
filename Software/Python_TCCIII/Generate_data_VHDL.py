@@ -92,7 +92,32 @@ def Generate_LUT_constants(kernel_size):
         f.write(string)
     f.close()
 
+def Generate_Gaussian_Constants_1D(size, sigma, factor):
+    horizontal, vertical = Lib_op.gaussian_kernel_gen(size, sigma, True, factor)
+    cont = 0
+
+    string = "constant c_Gaussian_Kernel_" +str(size)+"_Hor : fixed_vector("+ str(size-1) + " downto 0) := (\n\t"
+
+    for i in horizontal:
+        a = Lib_fx.float_to_fixed(i)
+        string += str(cont) + "=>x\"" + a[2:] + "\", "
+        cont+=1
+
+    string = string[:-2] + ");\n"
+    string += "constant c_Gaussian_Kernel_" +str(size)+"_Ver : fixed_vector("+ str(size-1) + " downto 0) := (\n\t"
+    cont = 0
+    for i in vertical:
+        a = Lib_fx.float_to_fixed(i)
+        string += str(cont) + "=>x\"" + a[2:] + "\", "
+        cont+=1
+    string = string[:-2] + ");"
+
+    with open("kernel.txt", "w") as f:
+        f.write(string)
+    f.close()
+
+
 #Generate_string_constant(7, 1)
 #Generate_img_VHDL("lena", (7,7), 2, 16)
-Generate_LUT_constants(7)
-
+#Generate_LUT_constants(7)
+Generate_Gaussian_Constants_1D(7,1,100)

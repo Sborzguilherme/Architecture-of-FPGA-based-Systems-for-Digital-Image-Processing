@@ -822,5 +822,21 @@ constant c_Gaussian_Lut_7_W6: fixed_vector(255 downto 0):= (
 246 => x"2766",	247 => x"278f",	248 => x"27b8",	249 => x"27e1",	250 => x"280a",	251 => x"2833",
 252 => x"285c",	253 => x"2885",	254 => x"28ae",	255 => x"28d7");
 
+-- Separable values
+constant c_Gaussian_Kernel_3_Hor : fixed_vector(2 downto 0) := (
+	0=>x"0060", 1=>x"009f", 2=>x"0060");
+constant c_Gaussian_Kernel_3_Ver : fixed_vector(2 downto 0) := (
+	0=>x"0033", 1=>x"0054", 2=>x"0033");
+
+constant c_Gaussian_Kernel_5_Hor : fixed_vector(4 downto 0) := (
+	0=>x"0008", 1=>x"0022", 2=>x"0038", 3=>x"0022", 4=>x"0008");
+constant c_Gaussian_Kernel_5_Ver : fixed_vector(4 downto 0) := (
+	0=>x"001a", 1=>x"0073", 2=>x"00bd", 3=>x"0073", 4=>x"001a");
+
+constant c_Gaussian_Kernel_7_Hor : fixed_vector(6 downto 0) := (
+	0=>x"0001", 1=>x"0006", 2=>x"001b", 3=>x"002d", 4=>x"001b", 5=>x"0006", 6=>x"0001");
+constant c_Gaussian_Kernel_7_Ver : fixed_vector(6 downto 0) := (
+	0=>x"0003", 1=>x"001f", 2=>x"008c", 3=>x"00e6", 4=>x"008c", 5=>x"001f", 6=>x"0003");
+
 
 end Package_Constant;

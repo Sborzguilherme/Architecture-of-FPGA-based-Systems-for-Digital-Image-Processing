@@ -7,6 +7,7 @@ import numpy as np
 import math
 import Library_fixed_point as fx
 import approximate_adder as APX
+import scipy.linalg as la
 # ---------------------------------------- Treat virtual board ------------------------------------------------------- #
 # Parameters
 #   img: input numpy array
@@ -113,7 +114,7 @@ def floating_point_convolution_2D(img, kernel, virtual_board):
 
     return out_img
 # -------------------------------------- Generate Gaussian kernel ---------------------------------------------------- #
-def gaussian_kernel_gen(size, sigma):
+def gaussian_kernel_gen(size, sigma, Separable=False, factor = 10):
 
     gkernel = np.zeros(shape=(size,size))
     for_range = (size-1)//2
@@ -129,6 +130,15 @@ def gaussian_kernel_gen(size, sigma):
     for i in range(size):
         for j in range(size):
             gkernel[i][j] /= sum
+
+    if(Separable):
+        horizontal_kernel = gkernel[0]*factor                   # Horizontal
+        vertical_kernel = np.zeros(size)
+
+        for i in range(size):
+            vertical_kernel[i] = gkernel[i][i] / horizontal_kernel[i]  # Acess main diagonal
+
+        return horizontal_kernel, vertical_kernel
 
     return gkernel
 # ------------------------------------------ Fixed-Point Convolution ------------------------------------------------- #
@@ -181,3 +191,7 @@ def APX_Convolution(img, kernel, virtual_board):
                     #print("IMG_FX = ", img_fx, "\tKernel_fx = ", kernel_fx, "\tAux_Mult = ", fx.float_to_fixed(aux_mult), "\t\tAux = ", aux)
             out_img[i][j] = fx.fixed_to_float(APX.adder_tree_3_apx(aux))
     return out_img
+
+# h, v = gaussian_kernel_gen(7, 1, True, 100)
+# print("Horizontal = \n", h)
+# print("Vertical = \n", v)
