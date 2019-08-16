@@ -57,6 +57,7 @@ architecture arch of Filter_Sep_3 is
 ------------------------------ STAGE 0 -----------------------------------------
     g_STAGE_0 : for i in 0 to 2 generate
       w_STAGE_0(i) <= i_KERNEL(i) * i_WEIGHTS(i);
+      --w_STAGE_0(i) <= i_KERNEL(i);
 
 			Reg_S0 : Reg
 			port map (
@@ -71,7 +72,8 @@ architecture arch of Filter_Sep_3 is
 ------------------------------ STAGE 1 -----------------------------------------
       w_STAGE_1(0) <= r_REG_0(0) + r_REG_0(1);
       w_STAGE_1(1) <= r_REG_0(2);
-
+      --w_STAGE_1(0) <= r_REG_0(0);
+      --w_STAGE_1(1) <= r_REG_0(1);
 
     g_STAGE_1 : for i in 0 to 1 generate
 
@@ -87,5 +89,6 @@ architecture arch of Filter_Sep_3 is
     end generate;
 
     o_RESULT <= r_REG_1(0) + r_REG_1(1);
-    
+    --o_RESULT <= r_REG_1(0);
+
 end architecture;

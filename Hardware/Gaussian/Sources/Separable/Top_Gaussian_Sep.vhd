@@ -14,10 +14,10 @@ use work.Package_Fixed.all;
 
 entity Top_Gaussian_Sep is
   generic(
-      p_KERNEL_HEIGHT    : integer := 3;
-      p_KERNEL_WIDTH     : integer := 3;
-      p_INPUT_IMG_WIDTH  : integer := 514;
-      p_INPUT_IMG_HEIGHT : integer := 514
+      p_KERNEL_HEIGHT    : integer := 5;
+      p_KERNEL_WIDTH     : integer := 5;
+      p_INPUT_IMG_WIDTH  : integer := 516;
+      p_INPUT_IMG_HEIGHT : integer := 516
   );
   port(
       i_CLK         : in std_logic;
@@ -41,9 +41,9 @@ architecture arch of Top_Gaussian_Sep is
     signal w_PIX_RDY_HOR  : std_logic;
 
     -- Signals to test in Quartus
-    -- signal r_REG_OUT				      : fixed;
-	  -- signal r_IN_PIX 			        : fixed;
-	  -- signal r_OUT_PIX 			        : fixed;
+    signal r_REG_OUT		  : fixed;
+	  signal r_IN_PIX 			: fixed;
+	  signal r_OUT_PIX 			: fixed;
 
 begin
 
@@ -67,6 +67,7 @@ begin
     i_START       => i_START,
     i_VALID_PIXEL => i_VALID_PIXEL,
     i_INPUT_PIXEL => i_INPUT_PIXEL,
+    --i_INPUT_PIXEL     => r_IN_PIX,
     o_PIX_RDY     => w_PIX_RDY_HOR,
     o_DONE        => w_DONE_HOR,
     o_OUT_PIXEL   => w_PIX_HOR
@@ -86,9 +87,11 @@ begin
     i_INPUT_PIXEL => w_PIX_HOR,
     o_PIX_RDY     => o_PIX_RDY,
     o_DONE        => o_DONE,
-    o_OUT_PIXEL   => o_OUT_PIXEL
+    --o_OUT_PIXEL   => r_REG_OUT
+    o_OUT_PIXEL         => o_OUT_PIXEL
   );
 
   w_VALID_VER <= w_PIX_RDY_HOR or w_DONE_HOR;
+  --o_OUT_PIXEL <= r_OUT_PIX;
 
 end architecture;

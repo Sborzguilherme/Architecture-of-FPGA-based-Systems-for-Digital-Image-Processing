@@ -94,7 +94,6 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
     o_MAX_KER_ROW     => w_MAX_KER_ROW,
     o_MAX_INV_KER     => w_MAX_INV_KER,
     o_BUFFERS_FILLED  => w_BUFFERS_FILLED,
-    --o_OUT_PIXEL         => r_REG_OUT
     o_OUT_PIXEL         => o_OUT_PIXEL
   );
 

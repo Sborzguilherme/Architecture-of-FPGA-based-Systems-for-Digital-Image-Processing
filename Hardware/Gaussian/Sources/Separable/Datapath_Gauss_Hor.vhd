@@ -88,7 +88,7 @@ begin
   port map (
     i_CLK      => i_CLK,
     i_RST      => i_RST,
-    i_ENA      => i_ENA_WRI_KER,
+    i_ENA      => w_ENA_WK,
     i_CLR      => '0',
     i_DATA_IN  => i_INPUT_PIXEL,
     o_DATA_OUT => w_DRA_OUT

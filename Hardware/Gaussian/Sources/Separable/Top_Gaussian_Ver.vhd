@@ -89,7 +89,6 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
   port map (
     i_CLK             => i_CLK,
     i_RST             => i_RST,
-    --i_INPUT_PIXEL     => r_IN_PIX,
     i_INPUT_PIXEL     => i_INPUT_PIXEL,
     i_VALID_PIXEL     => i_VALID_PIXEL,
     i_ENA_CNT_KER_TOT => w_ENA_CNT_KER_TOT,
@@ -103,7 +102,6 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
     o_MAX_KER_TOT     => w_MAX_KER_TOT,
     o_MAX_KER_ROW     => w_MAX_KER_ROW,
     o_BUFFERS_FILLED  => w_BUFFERS_FILLED,
-    --o_OUT_PIXEL         => r_REG_OUT
     o_OUT_PIXEL         => o_OUT_PIXEL
   );
 
@@ -140,7 +138,5 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
        o_PIX_RDY <= w_BUF_RDY(5) and w_LAST_VALID;
        o_DONE    <= w_BUF_DONE(5) and w_LAST_VALID;
     end generate;
-
-    --o_OUT_PIXEL <= r_OUT_PIX;
 
 end architecture;

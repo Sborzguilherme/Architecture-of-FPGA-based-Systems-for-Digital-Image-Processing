@@ -192,6 +192,49 @@ def APX_Convolution(img, kernel, virtual_board):
             out_img[i][j] = fx.fixed_to_float(APX.adder_tree_3_apx(aux))
     return out_img
 
-# h, v = gaussian_kernel_gen(7, 1, True, 100)
+def Sep_Convolution(img, kernel_size, virtual_board):
+
+    # Treat virtual board as specified in the parameter
+    img = treat_virtual_board(img, kernel_size, kernel_size, virtual_board)
+
+    # Img Dimensions
+    h_img_height = len(img)
+    h_img_width  = len(img[0]) - (kernel_size-1)
+    v_img_height = len(img) - (kernel_size-1)
+    v_img_width  = h_img_width
+
+    h_img = np.zeros(shape=(h_img_height, h_img_width))
+    v_img = np.zeros(shape=(v_img_height, v_img_width))
+
+    # Define factor based on the kernel size
+    if(kernel_size == 3):
+        factor = 1
+    elif(kernel_size == 5):
+        factor = 10
+    else:
+        factor = 100
+
+    h_kernel, v_kernel = gaussian_kernel_gen(kernel_size, 1, True, factor)
+
+    for i in range(h_img_height):
+        for j in range(h_img_width):
+            aux = 0
+            for k in range(kernel_size):
+                img_fx = fx.float_to_integer_fx(img[i][j+k])            # Convert image value to int
+                kernel_fx = fx.float_to_integer_fx(h_kernel[k])         # Convert kernel value to int
+                h_img[i][j] += fx.fixed_point_mult(img_fx, kernel_fx)
+
+    # Horizontal convolution finished
+    for i in range(v_img_height):
+        for j in range(v_img_width):
+            aux = 0
+            for k in range(kernel_size):
+                img_fx = fx.float_to_integer_fx(h_img[i+k][j])            # Convert image value to int
+                kernel_fx = fx.float_to_integer_fx(v_kernel[k])         # Convert kernel value to int
+                v_img[i][j] += fx.fixed_point_mult(img_fx, kernel_fx)
+
+    return v_img
+
+# h, v = gaussian_kernel_gen(3, 1, True, 4)
 # print("Horizontal = \n", h)
 # print("Vertical = \n", v)

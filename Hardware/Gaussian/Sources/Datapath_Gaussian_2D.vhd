@@ -40,7 +40,7 @@ port(
   i_ENA_CNT_BUF_FIL     : in  std_logic;
   i_CLR_CNT_BUF_FIL     : in  std_logic;
   i_ENA_WRI_KER         : in  std_logic;
-  i_ENA_WRI_REG         : in  std_logic;    
+  i_ENA_WRI_REG         : in  std_logic;
   o_MAX_KER_TOT         : out std_logic;
   o_MAX_KER_ROW         : out std_logic;
   o_MAX_INV_KER         : out std_logic;
@@ -151,18 +151,18 @@ begin
     --   o_RESULT  => o_OUT_PIXEL
     -- );
 
-    Filter_LUT_Apx_3_i : Filter_LUT_Apx_3
-    generic map (
-      p_FILTER_SIZE => c_KERNEL_SIZE
-    )
-    port map (
-      i_CLK     => i_CLK,
-      i_RST     => i_RST,
-      i_ENA_REG => w_ENA_WR,
-      i_KERNEL  => w_DRA_OUT,
-      i_WEIGHTS => c_Gaussian_Kernel_3,
-      o_RESULT  => o_OUT_PIXEL
-    );
+    -- Filter_LUT_Apx_3_i : Filter_LUT_Apx_3
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_3,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
 
 
     -- SG_Filter_3_i : SG_Filter_3

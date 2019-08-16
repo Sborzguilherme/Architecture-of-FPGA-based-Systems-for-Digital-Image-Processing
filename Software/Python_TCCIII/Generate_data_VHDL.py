@@ -99,16 +99,16 @@ def Generate_Gaussian_Constants_1D(size, sigma, factor):
     string = "constant c_Gaussian_Kernel_" +str(size)+"_Hor : fixed_vector("+ str(size-1) + " downto 0) := (\n\t"
 
     for i in horizontal:
-        a = Lib_fx.float_to_fixed(i)
-        string += str(cont) + "=>x\"" + a[2:] + "\", "
+        a = Lib_fx.float_to_fixed(i,hex_format=False)
+        string += str(cont) + "=>\"" + a + "\", "
         cont+=1
 
     string = string[:-2] + ");\n"
     string += "constant c_Gaussian_Kernel_" +str(size)+"_Ver : fixed_vector("+ str(size-1) + " downto 0) := (\n\t"
     cont = 0
     for i in vertical:
-        a = Lib_fx.float_to_fixed(i)
-        string += str(cont) + "=>x\"" + a[2:] + "\", "
+        a = Lib_fx.float_to_fixed(i,hex_format=False)
+        string += str(cont) + "=>\"" + a + "\", "
         cont+=1
     string = string[:-2] + ");"
 
@@ -118,6 +118,6 @@ def Generate_Gaussian_Constants_1D(size, sigma, factor):
 
 
 #Generate_string_constant(7, 1)
-#Generate_img_VHDL("lena", (7,7), 2, 16)
+Generate_img_VHDL("lena", (5,5), 2, 16)
 #Generate_LUT_constants(7)
-Generate_Gaussian_Constants_1D(7,1,100)
+#Generate_Gaussian_Constants_1D(7,1,100)
