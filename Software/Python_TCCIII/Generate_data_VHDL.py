@@ -118,6 +118,6 @@ def Generate_Gaussian_Constants_1D(size, sigma, factor):
 
 
 #Generate_string_constant(7, 1)
-Generate_img_VHDL("lena", (5,5), 2, 16)
+#Generate_img_VHDL("lena", (5,5), 2, 16)
 #Generate_LUT_constants(7)
-#Generate_Gaussian_Constants_1D(7,1,100)
+Generate_Gaussian_Constants_1D(7,1,100)

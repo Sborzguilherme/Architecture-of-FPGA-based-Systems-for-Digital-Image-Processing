@@ -51,7 +51,7 @@ architecture arch of Top_Gaussian_Ver is
     signal w_DONE                 : std_logic;
     signal w_BUF_DONE             : std_logic_vector(5 downto 0) := (others=>'0');
     signal w_BUF_RDY              : std_logic_vector(5 downto 0) := (others=>'0');
-    signal w_LAST_VALID           : std_logic := '0';
+    signal w_LAST_VALID           : std_logic_vector(1 downto 0) := (others=>'0');
     -- Signals to test in Quartus
     -- signal r_REG_OUT				      : fixed;
 	  -- signal r_IN_PIX 			        : fixed;
@@ -70,13 +70,14 @@ begin
 shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
   begin
       if(rising_edge(i_CLK)) then
-        if(w_LAST_VALID = '1') then
+        if(w_LAST_VALID(0) = '1') then
           w_BUF_RDY(5 downto 1) <= w_BUF_RDY(4 downto 0);
           w_BUF_DONE(5 downto 1) <= w_BUF_DONE(4 downto 0);
           w_BUF_DONE(0) <= w_DONE;
           w_BUF_RDY(0) <= w_PIX_RDY;
         end if;
-        w_LAST_VALID <= i_VALID_PIXEL;
+        w_LAST_VALID(1) <= w_LAST_VALID(0);
+        w_LAST_VALID(0) <= i_VALID_PIXEL;
       end if;
   end process;
 
@@ -127,16 +128,16 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
     );
 
     g_output_singals : if p_KERNEL_HEIGHT = 3 generate
-        o_PIX_RDY <= w_BUF_RDY(1) and w_LAST_VALID;
-        o_DONE    <= w_BUF_DONE(1) and w_LAST_VALID;
+        o_PIX_RDY <= w_BUF_RDY(1) and w_LAST_VALID(0);
+        o_DONE    <= w_BUF_DONE(1) and w_LAST_VALID(0);
 
     elsif p_KERNEL_HEIGHT = 5 generate
-       o_PIX_RDY <= w_BUF_RDY(2) and w_LAST_VALID;
-       o_DONE    <= w_BUF_DONE(2) and w_LAST_VALID;
+       o_PIX_RDY <= w_BUF_RDY(2) and w_LAST_VALID(1);
+       o_DONE    <= w_BUF_DONE(2) and w_LAST_VALID(1);
 
     else generate
-       o_PIX_RDY <= w_BUF_RDY(5) and w_LAST_VALID;
-       o_DONE    <= w_BUF_DONE(5) and w_LAST_VALID;
+       o_PIX_RDY <= w_BUF_RDY(2) and w_LAST_VALID(1);
+       o_DONE    <= w_BUF_DONE(2) and w_LAST_VALID(1);
     end generate;
 
 end architecture;

@@ -49,7 +49,7 @@ end process;
     wait for period;
     while done = '0' loop
       pix_in <= count;
-      count := count + x"0001";
+      count := count + "00000000000000001";
       wait for period;
 
     end loop;
@@ -78,10 +78,10 @@ end process;
 
   Top_Gaussian_Sep_i : Top_Gaussian_Sep
   generic map (
-    p_KERNEL_HEIGHT    => 3,
-    p_KERNEL_WIDTH     => 3,
-    p_INPUT_IMG_WIDTH  => 10,
-    p_INPUT_IMG_HEIGHT => 10
+    p_KERNEL_HEIGHT    => 7,
+    p_KERNEL_WIDTH     => 7,
+    p_INPUT_IMG_WIDTH  => 30,
+    p_INPUT_IMG_HEIGHT => 30
   )
   port map (
     i_CLK         => clk,

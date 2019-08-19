@@ -49,7 +49,7 @@ p_READ : process
 
     begin
     wait for period*2;
-    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_5.txt", READ_MODE);
+    file_open(fil_in, "../../../Data/Input_Data/TXT/VB_2/16_bits/lena_7.txt", READ_MODE);
     while not endfile(fil_in) loop
       readline(fil_in, v_LINE);
       read(v_LINE, v_data);
@@ -63,7 +63,7 @@ p_WRITE : process
   variable v_line : line;
 begin
   wait for period;
-  file_open(fil_out, "../../../Data/Output_Data/VB_2/16_bits/lena_5_Sep.txt", WRITE_MODE);
+  file_open(fil_out, "../../../Data/Output_Data/VB_2/16_bits/lena_7_Sep.txt", WRITE_MODE);
   while done = '0' loop
     if pix_rdy = '1' then
         write(v_line, pix_out);
@@ -97,10 +97,10 @@ end process;
 
 Top_Gaussian_Sep_i : Top_Gaussian_Sep
 generic map (
-  p_KERNEL_HEIGHT    => 3,
-  p_KERNEL_WIDTH     => 3,
-  p_INPUT_IMG_WIDTH  => 514,
-  p_INPUT_IMG_HEIGHT => 514
+  p_KERNEL_HEIGHT    => 7,
+  p_KERNEL_WIDTH     => 7,
+  p_INPUT_IMG_WIDTH  => 518,
+  p_INPUT_IMG_HEIGHT => 518
 )
 port map (
   i_CLK         => clk,
@@ -112,7 +112,5 @@ port map (
   o_DONE        => done,
   o_OUT_PIXEL   => pix_out
 );
-
-
 
 end architecture;

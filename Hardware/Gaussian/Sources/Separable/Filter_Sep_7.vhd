@@ -58,7 +58,7 @@ architecture arch of Filter_Sep_7 is
     g_STAGE_0 : for i in 0 to 6 generate
       w_STAGE_0(i) <= i_KERNEL(i) * i_WEIGHTS(i);
 
-			Reg_S0 : Reg
+      Reg_S0 : Reg
 			port map (
 			  i_CLK  => i_CLK,
 			  i_RST  => i_RST,
@@ -102,5 +102,5 @@ architecture arch of Filter_Sep_7 is
     end generate;
 
     o_RESULT <= r_REG_2(0) + r_REG_2(1);
-
+    
 end architecture;

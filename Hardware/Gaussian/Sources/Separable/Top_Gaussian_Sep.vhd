@@ -88,7 +88,7 @@ begin
     o_PIX_RDY     => o_PIX_RDY,
     o_DONE        => o_DONE,
     --o_OUT_PIXEL   => r_REG_OUT
-    o_OUT_PIXEL         => o_OUT_PIXEL
+    o_OUT_PIXEL   => o_OUT_PIXEL
   );
 
   w_VALID_VER <= w_PIX_RDY_HOR or w_DONE_HOR;

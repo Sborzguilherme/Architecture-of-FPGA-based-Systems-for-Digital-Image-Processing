@@ -49,8 +49,8 @@ architecture arch of Filter_Sep_5 is
     shift_left_signals : process(i_CLK, i_ENA_REG)
     begin
         if(rising_edge(i_CLK)) then
-          w_BUF_ENA_WRI(1) <= w_BUF_ENA_WRI(0);
-          w_BUF_ENA_WRI(0) <= i_ENA_REG;
+            w_BUF_ENA_WRI(1) <= w_BUF_ENA_WRI(0);
+            w_BUF_ENA_WRI(0) <= i_ENA_REG;
         end if;
     end process;
 --------------------------------------------------------------------------------
@@ -101,5 +101,5 @@ architecture arch of Filter_Sep_5 is
     end generate;
 
     o_RESULT <= r_REG_2(0) + r_REG_2(1);
-
+    
 end architecture;

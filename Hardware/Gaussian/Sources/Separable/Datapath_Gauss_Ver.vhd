@@ -160,7 +160,7 @@ begin
   COMP_BUF_FIL : Comparator
   port map (
   i_A  => w_CNT_BUF_FIL,
-  i_B  => c_BUF_FIL-1,              -- CHANGED (-1 TO 0)
+  i_B  => c_BUF_FIL-1,
   o_EQ => o_BUFFERS_FILLED
   );
 

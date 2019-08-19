@@ -130,8 +130,8 @@ shift_left_signals : process(i_CLK, i_VALID_PIXEL, w_BUF_RDY, w_BUF_DONE)
        o_DONE    <= w_BUF_DONE(2);
 
     else generate
-       o_PIX_RDY <= w_BUF_RDY(5);
-       o_DONE    <= w_BUF_DONE(5);
+       o_PIX_RDY <= w_BUF_RDY(2);
+       o_DONE    <= w_BUF_DONE(2);
     end generate;
 
 end architecture;
