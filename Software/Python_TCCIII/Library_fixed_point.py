@@ -58,8 +58,8 @@ def fixed_point_mult(a, b):
     mult = (a * b)/(2**LSB)
     return mult/(2**LSB)
 
-#print(float_to_fixed(0.20417996))
-#print(fixed_to_float('0101', 16))
+print(float_to_fixed(1.65))
+print(fixed_to_float('001A', 16))
 #print(float_to_fixed(fixed_point_mult(0.203125, 255)))
 
 
