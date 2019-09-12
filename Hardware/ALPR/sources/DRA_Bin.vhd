@@ -15,7 +15,6 @@ use ieee.std_logic_1164.all;
 library work;
 use work.ALPR_package.all;	-- Package with project types
 
-
 entity DRA_Bin is
 generic (
 	c_KERNEL_HEIGHT 	: integer;
@@ -37,11 +36,11 @@ architecture arch_1 of DRA_Bin is
 --constant c_KERNEL_SIZE : integer := c_KERNEL_WIDTH * c_KERNEL_HEIGHT
 
 -- Kernel
-signal w_KER_DAT : std_logic_vector(0 to c_KERNEL_SIZE-1);
+signal w_KER_DAT : std_logic_vector(0 to c_KERNEL_SIZE-1) := (others=>'0');
 
 -- ROW BUFFER
-signal w_ROW_BUF_IN  	 : std_logic_vector(0 to c_KERNEL_HEIGHT-2);
-signal w_ROW_BUF_OUT	 : std_logic_vector(0 to c_KERNEL_HEIGHT-2);
+signal w_ROW_BUF_IN  	 : std_logic_vector(0 to c_KERNEL_HEIGHT-2) := (others=> '0');
+signal w_ROW_BUF_OUT	 : std_logic_vector(0 to c_KERNEL_HEIGHT-2) := (others=> '0');
 
 begin
     -- ROW BUFFERS

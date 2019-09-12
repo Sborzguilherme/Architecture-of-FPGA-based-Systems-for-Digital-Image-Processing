@@ -98,4 +98,4 @@ def template_matching(img, template):
                 max_pos_j = j
                 most_sim = np.count_nonzero(aux_img==template)
 
-    return max_pos_i, max_pos_j
+    return max_pos_i, max_pos_j, most_sim

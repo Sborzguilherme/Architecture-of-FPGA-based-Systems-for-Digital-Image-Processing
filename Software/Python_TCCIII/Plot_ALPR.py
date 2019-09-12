@@ -26,12 +26,30 @@ mask = np.append(lin_countours_start, mask, axis=0)
 mask = np.append(mask, col_countours_end, axis=1)
 mask = np.append(mask, lin_countours_end,axis=0)
 
+copy_mask = mask.reshape([mask.size])
 
 # Find plate position within the image
-i,j = MO.template_matching(ori_img, mask)
-print(i,j)
+i,j, max_value = MO.template_matching(ori_img, mask)
+print(i,j, max_value)
 
 cv.rectangle(backtorgb,(j,i),(j+100,i+40),(255,0,0),2)
+
+cont = 0
+mask_value = ""
+string = "constant c_TEMPLATE_MASK : std_logic_vector(" + str(mask.size-1) + " downto 0) := x\""
+print(copy_mask.size)
+for i in range(copy_mask.size):
+    if(copy_mask[i] == 255):
+        mask_value +='1'
+    else:
+        mask_value+='0'
+
+mask_value_n = hex(int(mask_value, 2))
+mask_value = mask_value_n[2:].zfill(copy_mask.size//4)
+string += mask_value + "\";"
+
+with open("mask.txt", 'w') as f:
+    f.write(string)
 
 #cv.rectangle(backtorgb,(110,100),(220,160),(0,255,0),2)
 
@@ -63,4 +81,4 @@ plt.imshow(backtorgb)
 # plt.figure(num = "DIFFERENCE")
 # plt.imshow(diff, cmap='gray')
 
-plt.show()
+#plt.show()

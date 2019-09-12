@@ -11,14 +11,14 @@ use ieee.std_logic_1164.all;
 use work.ALPR_package.all;
 
 entity Reg is
-  generic(
-    c_WIDTH : integer
-  );
+generic(
+  c_WIDTH : integer
+);
 port (
 	i_CLK   : in  std_logic;                              -- clock
-	i_RST   : in  std_logic;					          -- reset
-	i_ENA   : in  std_logic;               		          -- enable
-	i_CLR   : in  std_logic;               		          -- clear
+	i_RST   : in  std_logic;					                    -- reset
+	i_ENA   : in  std_logic;               		            -- enable
+	i_CLR   : in  std_logic;               		            -- clear
 	i_DIN   : in  std_logic_vector(c_WIDTH-1 downto 0);   -- input data
 	o_DOUT  : out std_logic_vector(c_WIDTH-1 downto 0)    -- output data
 	);

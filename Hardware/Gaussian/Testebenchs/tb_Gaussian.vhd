@@ -8,7 +8,6 @@ library work;
 use work.Package_Gaussian.all;
 use work.Package_Fixed.all;
 
-
 entity tb_Gaussian is
 end entity;
 

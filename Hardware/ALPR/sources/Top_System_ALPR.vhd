@@ -31,9 +31,11 @@ entity Top_System_ALPR is
       i_START       : in std_logic;
       i_VALID_PIXEL : in std_logic;
       i_INPUT_PIXEL : in std_logic_vector(c_WIDTH_INPUT_PIXEL-1 downto 0);
-      o_PIX_RDY     : out std_logic;
+      --o_PIX_RDY     : out std_logic;
       o_DONE        : out std_logic;
-      o_OUT_PIXEL   : out std_logic
+      --o_OUT_PIXEL   : out std_logic
+      o_COORD_X     : out std_logic_vector(15 downto 0);
+      o_COORD_Y     : out std_logic_vector(15 downto 0)
     );
 end Top_System_ALPR;
 
@@ -43,9 +45,14 @@ architecture arch of Top_System_ALPR is
   signal w_DONE_BLOCK1 : std_logic;
 
   signal w_PIX_RDY_BLOCK2   : std_logic;
+  signal w_PIX_RDY_BLOCK3   : std_logic;
+  signal w_VALID_BLOCK3     : std_logic;
   signal w_OUT_PIXEL_BLOCK2 : std_logic;
+  signal w_OUT_PIXEL_BLOCK3 : std_logic;
   signal w_DONE_BLOCK2      : std_logic;
-  signal w_OUT_REG          : std_logic;
+  signal w_DONE_BLOCK3      : std_logic;
+  signal w_OUT_REG_1        : std_logic;
+  signal w_OUT_REG_2        : std_logic;
 
   signal w_OUT_PIXEL_BLOCK1 : std_logic_vector(c_WIDTH_GRAY_PIXEL-1 downto 0);
 
@@ -96,7 +103,7 @@ begin
     i_ENA  => w_PIX_RDY_BLOCK2,
     i_CLR  => '0',
     i_DIN  => w_OUT_PIXEL_BLOCK2,
-    o_DOUT => w_OUT_REG
+    o_DOUT => w_OUT_REG_1
   );
 
 
@@ -116,11 +123,41 @@ port map (
   i_RST         => i_RST,
   i_VALID_PIXEL => w_PIX_RDY_BLOCK2,
   i_PIX_RDY_SUB => w_PIX_RDY_BLOCK2,
-  i_INPUT_PIXEL => w_OUT_REG,
-  o_PIX_RDY     => o_PIX_RDY,
-  o_DONE        => o_DONE,
-  o_OUT_PIXEL   => o_OUT_PIXEL
+  i_INPUT_PIXEL => w_OUT_REG_1,
+  o_PIX_RDY     => w_PIX_RDY_BLOCK3,
+  o_DONE        => w_DONE_BLOCK3,
+  o_OUT_PIXEL   => w_OUT_PIXEL_BLOCK3
 );
 
+FF_2 : Flip_Flop
+port map (
+  i_CLK  => i_CLK,
+  i_RST  => i_RST,
+  i_ENA  => w_PIX_RDY_BLOCK3,
+  i_CLR  => '0',
+  i_DIN  => w_OUT_PIXEL_BLOCK3,
+  o_DOUT => w_OUT_REG_2
+);
+
+w_VALID_BLOCK3 <= w_PIX_RDY_BLOCK3 or w_DONE_BLOCK3;
+
+-- Connected componen labeling operation
+Top_CCL_i : Top_CCL
+generic map (
+  p_KERNEL_HEIGHT    => c_MASK_HEIGHT,
+  p_KERNEL_WIDTH     => c_MASK_WIDTH,
+  p_INPUT_IMG_WIDTH  => c_INPUT_IMG_WIDTH_CCL,
+  p_INPUT_IMG_HEIGHT => c_INPUT_IMG_HEIGHT_CCL
+)
+port map (
+  i_CLK         => i_CLK,
+  i_RST         => i_RST,
+  i_START       => w_PIX_RDY_BLOCK3,
+  i_VALID_PIXEL => w_VALID_BLOCK3,
+  i_INPUT_PIXEL => w_OUT_REG_2,
+  o_DONE        => o_DONE,
+  o_COORD_X     => o_COORD_X,
+  o_COORD_Y     => o_COORD_Y
+);
 
 end architecture;
