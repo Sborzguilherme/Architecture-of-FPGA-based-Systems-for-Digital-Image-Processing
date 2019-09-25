@@ -59,9 +59,9 @@ begin
   begin
     if (i_RST = '1') then
       r_state_reg <= s_IDLE;            -- idle
-  elsif (rising_edge(i_CLK)) then
-    r_state_reg <= r_next_state;
-  end if;
+    elsif (rising_edge(i_CLK)) then
+      r_state_reg <= r_next_state;
+    end if;
   end process;
 
   p_next_state : process (r_state_reg, i_START, i_BUFFERS_FILLED, i_MAX_KER_TOT,
@@ -76,23 +76,24 @@ begin
         end if;
 
       when s_BUF_FIL =>
-        if (i_BUFFERS_FILLED = '1') then
-            r_next_state <= s_VAL_WIN;
-        else
-            r_next_state <= s_BUF_FIL;
-        end if;
+          if (i_BUFFERS_FILLED = '1' and i_VALID_PIXEL = '1') then
+              r_next_state <= s_VAL_WIN;
+          else
+              r_next_state <= s_BUF_FIL;
+          end if;
+
 
       when s_VAL_WIN =>
-        if (i_MAX_KER_TOT = '1') then
+        if (i_MAX_KER_TOT = '1' and i_VALID_PIXEL = '1') then
           r_next_state <= s_END;
-        elsif (i_MAX_KER_ROW = '1') then
+        elsif (i_MAX_KER_ROW = '1' and i_VALID_PIXEL = '1') then
           r_next_state <= s_INV_WIN;
         else
           r_next_state <= s_VAL_WIN;
         end if;
 
       when s_INV_WIN =>
-        if(i_MAX_INV_KER = '1') then
+        if(i_MAX_INV_KER = '1' and i_VALID_PIXEL = '1') then
           r_next_state <= s_VAL_WIN;
         else
           r_next_state <= s_INV_WIN;
@@ -128,8 +129,8 @@ begin
 
   o_ENA_WRI_REG		  <= '1' when  r_state_reg = s_VAL_WIN     else '0';
 
-  o_PIX_RDY          <= '1' when r_state_reg = s_VAL_WIN     else '0';
+  o_PIX_RDY         <= '1' when r_state_reg = s_VAL_WIN     else '0';
 
-  o_DONE             <= '1' when r_state_reg = s_END         else '0';
+  o_DONE            <= '1' when r_state_reg = s_END         else '0';
 
 end arch;

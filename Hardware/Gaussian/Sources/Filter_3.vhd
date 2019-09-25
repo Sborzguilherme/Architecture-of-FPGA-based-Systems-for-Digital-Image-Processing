@@ -23,18 +23,20 @@ entity Filter_3 is
     p_FILTER_SIZE : integer -- Kernel Height * Kernel width
   );
   port(
-    i_CLK			: in std_logic;
-  	i_RST			: in std_logic;
-    i_ENA_REG : in std_logic;
-    i_KERNEL 	: in fixed_vector(p_FILTER_SIZE-1 downto 0);
-    i_WEIGHTS : in fixed_vector(p_FILTER_SIZE-1 downto 0);
-  	o_RESULT 	: out fixed
+    i_CLK			    : in std_logic;
+  	i_RST			    : in std_logic;
+    i_VALID_PIXEL : in std_logic;
+    i_ENA_REG     : in std_logic;
+    i_KERNEL 	    : in fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS     : in fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_PIX_RDY     : out std_logic;
+  	o_RESULT 	    : out fixed
   );
   end entity Filter_3;
 
 architecture arch of Filter_3 is
 
-  signal w_BUF_ENA_WRI : std_logic_vector(2 downto 0) := (others => '0');
+  signal w_BUF_ENA_WRI : std_logic_vector(3 downto 0) := (others => '0');
 
   signal r_REG_0 : fixed_vector(8 downto 0);
   signal r_REG_1 : fixed_vector(3 downto 0);
@@ -52,11 +54,11 @@ architecture arch of Filter_3 is
 
   begin
     -- Shift signal to enable load in the barrier registers
-    shift_left_signals : process(i_CLK, i_ENA_REG)
+    shift_left_signals : process(i_CLK, i_ENA_REG, i_VALID_PIXEL)
     begin
         if(rising_edge(i_CLK)) then
-          w_BUF_ENA_WRI(2 downto 1) <= w_BUF_ENA_WRI(1 downto 0);
-          w_BUF_ENA_WRI(0) <= i_ENA_REG;
+          w_BUF_ENA_WRI(3 downto 1) <= w_BUF_ENA_WRI(2 downto 0);
+          w_BUF_ENA_WRI(0) <= i_ENA_REG and i_VALID_PIXEL;
         end if;
     end process;
 
@@ -149,5 +151,7 @@ architecture arch of Filter_3 is
     );
 
     o_RESULT <= r_REG_3 + r_REG_8_S3;
+
+    o_PIX_RDY <= w_BUF_ENA_WRI(3);
 
 end architecture;

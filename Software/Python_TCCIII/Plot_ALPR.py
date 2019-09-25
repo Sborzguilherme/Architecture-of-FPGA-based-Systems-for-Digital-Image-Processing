@@ -81,4 +81,4 @@ plt.imshow(backtorgb)
 # plt.figure(num = "DIFFERENCE")
 # plt.imshow(diff, cmap='gray')
 
-#plt.show()
+plt.show()

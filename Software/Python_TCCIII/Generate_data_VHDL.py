@@ -36,7 +36,7 @@ def Generate_string_constant(size, sigma):
     string = ""
     for i in range(len(kernel)):
         for j in range(len(kernel[0])):
-            a = Lib_fx.float_to_fixed(kernel[i][j], hex_format=False) # 14 bits constant
+            a = Lib_fx.float_to_fixed(kernel[i][j], hex_format=True) # 14 bits constant
             #a = Lib_fx.float_to_fixed(kernel[i][j])
             if(cont_l < size):
                 #string += str(cont) + "=> x\"" + a[2:] + "\", "
@@ -117,7 +117,7 @@ def Generate_Gaussian_Constants_1D(size, sigma, factor):
     f.close()
 
 
-#Generate_string_constant(7, 1)
+Generate_string_constant(3, 1)
 #Generate_img_VHDL("lena", (5,5), 2, 16)
 #Generate_LUT_constants(7)
-Generate_Gaussian_Constants_1D(7,1,100)
+#Generate_Gaussian_Constants_1D(7,1,100)

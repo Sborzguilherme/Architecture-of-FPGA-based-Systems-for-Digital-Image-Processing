@@ -8,7 +8,7 @@ from bitstring import Bits
 import math
 
 # Fixed-point format (8.12)
-MSB = 9                                         # Bit signal + integer part (0 + 8)
+MSB = 24                                         # Bit signal + integer part (0 + 8)
 LSB = 8                                         # Fract part
 
 # Maximum value (considering 0 bits for signal)
@@ -56,10 +56,11 @@ def float_to_integer_fx(num):
 # ----------------------------------------- Fixed-Point Multiplication ----------------------------------------------- #
 def fixed_point_mult(a, b):
     mult = (a * b)/(2**LSB)
-    return mult/(2**LSB)
+    return mult /(2**LSB)
 
-#print(float_to_fixed(1.65))
-#print(fixed_to_float('001A', 16))
+#print(float_to_fixed(3.477))
+#print(float_to_fixed(1.35))
+#print(fixed_to_float('3746', 16))
 #print(float_to_fixed(fixed_point_mult(0.203125, 255)))
 
 

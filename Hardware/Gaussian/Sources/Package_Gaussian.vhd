@@ -93,34 +93,35 @@ package Package_Gaussian is
   end component Control_Convolution;
 
   component Datapath_Gaussian_2D
-  generic (
-    p_KERNEL_HEIGHT    : integer;
-    p_KERNEL_WIDTH     : integer;
-    p_INPUT_IMG_WIDTH  : integer;
-    p_INPUT_IMG_HEIGHT : integer
-  );
-  port (
-    i_CLK             : in  std_logic;
-    i_RST             : in  std_logic;
-    i_INPUT_PIXEL     : in  fixed;
-    i_VALID_PIXEL     : in  std_logic;
-    i_ENA_CNT_KER_TOT : in  std_logic;
-    i_CLR_CNT_KER_TOT : in  std_logic;
-    i_ENA_CNT_KER_ROW : in  std_logic;
-    i_CLR_CNT_KER_ROW : in  std_logic;
-    i_ENA_CNT_INV_KER : in  std_logic;
-    i_CLR_CNT_INV_KER : in  std_logic;
-    i_ENA_CNT_BUF_FIL : in  std_logic;
-    i_CLR_CNT_BUF_FIL : in  std_logic;
-    i_ENA_WRI_KER     : in  std_logic;
-    i_ENA_WRI_REG     : in  std_logic;
-    o_MAX_KER_TOT     : out std_logic;
-    o_MAX_KER_ROW     : out std_logic;
-    o_MAX_INV_KER     : out std_logic;
-    o_BUFFERS_FILLED  : out std_logic;
-    o_OUT_PIXEL       : out fixed
-  );
-  end component Datapath_Gaussian_2D;
+generic (
+  p_KERNEL_HEIGHT    : integer;
+  p_KERNEL_WIDTH     : integer;
+  p_INPUT_IMG_WIDTH  : integer;
+  p_INPUT_IMG_HEIGHT : integer
+);
+port (
+  i_CLK             : in  std_logic;
+  i_RST             : in  std_logic;
+  i_INPUT_PIXEL     : in  fixed;
+  i_VALID_PIXEL     : in  std_logic;
+  i_ENA_CNT_KER_TOT : in  std_logic;
+  i_CLR_CNT_KER_TOT : in  std_logic;
+  i_ENA_CNT_KER_ROW : in  std_logic;
+  i_CLR_CNT_KER_ROW : in  std_logic;
+  i_ENA_CNT_INV_KER : in  std_logic;
+  i_CLR_CNT_INV_KER : in  std_logic;
+  i_ENA_CNT_BUF_FIL : in  std_logic;
+  i_CLR_CNT_BUF_FIL : in  std_logic;
+  i_ENA_WRI_KER     : in  std_logic;
+  i_ENA_WRI_REG     : in  std_logic;
+  o_MAX_KER_TOT     : out std_logic;
+  o_MAX_KER_ROW     : out std_logic;
+  o_MAX_INV_KER     : out std_logic;
+  o_BUFFERS_FILLED  : out std_logic;
+  o_PIX_RDY         : out std_logic;
+  o_OUT_PIXEL       : out fixed
+);
+end component Datapath_Gaussian_2D;
 
   component Counter
   port (
@@ -154,14 +155,17 @@ package Package_Gaussian is
     p_FILTER_SIZE : integer
   );
   port (
-    i_CLK     : in  std_logic;
-    i_RST     : in  std_logic;
-    i_ENA_REG : in  std_logic;
-    i_KERNEL  : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
-    i_WEIGHTS : in fixed_vector(p_FILTER_SIZE-1 downto 0);
-    o_RESULT  : out fixed
+    i_CLK         : in  std_logic;
+    i_RST         : in  std_logic;
+    i_VALID_PIXEL : in  std_logic;
+    i_ENA_REG     : in  std_logic;
+    i_KERNEL      : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS     : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_PIX_RDY     : out std_logic;
+    o_RESULT      : out fixed
   );
   end component Filter_3;
+
 
   component Filter_5
   generic (
@@ -369,6 +373,23 @@ package Package_Gaussian is
     o_RESULT  : out fixed
   );
   end component SG_Filter_Apx_3;
+
+  component Test_Filter_3
+  generic (
+    p_FILTER_SIZE : integer
+  );
+  port (
+    i_CLK         : in  std_logic;
+    i_RST         : in  std_logic;
+    i_VALID_PIXEL : in  std_logic;
+    i_ENA_REG     : in  std_logic;
+    i_KERNEL      : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    i_WEIGHTS     : in  fixed_vector(p_FILTER_SIZE-1 downto 0);
+    o_PIX_RDY     : out std_logic;
+    o_RESULT      : out fixed
+  );
+  end component Test_Filter_3;
+
 
   component Top_Gaussian
   generic (
@@ -578,5 +599,27 @@ package Package_Gaussian is
     o_OUT_PIXEL   : out fixed
   );
   end component Top_Gaussian_Ver;
+
+  component Wrapper_Gaussian
+  generic (
+    p_KERNEL_HEIGHT    : integer;
+    p_KERNEL_WIDTH     : integer;
+    p_INPUT_IMG_WIDTH  : integer;
+    p_INPUT_IMG_HEIGHT : integer
+  );
+  port (
+    i_CLK   : in  std_logic;
+    i_RST   : in  std_logic;
+    i_START : in  std_logic;
+    i_DATA  : in  fixed;
+    i_VALID : in  std_logic;
+    i_ACK   : in  std_logic;
+    o_ACK   : out std_logic;
+    o_VALID : out std_logic;
+    o_DONE  : out std_logic;
+    o_DATA  : out fixed
+  );
+  end component Wrapper_Gaussian;
+
 
 end Package_Gaussian;

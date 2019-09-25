@@ -45,11 +45,13 @@ port(
   o_MAX_KER_ROW         : out std_logic;
   o_MAX_INV_KER         : out std_logic;
   o_BUFFERS_FILLED      : out std_logic;
+  o_PIX_RDY             : out std_logic;
   o_OUT_PIXEL		        : out fixed
 );
 end entity Datapath_Gaussian_2D;
 
 architecture  arch of Datapath_Gaussian_2D is
+
   constant c_OUT_IMG_WIDTH    : integer := p_INPUT_IMG_WIDTH - (p_KERNEL_WIDTH-1);
   constant c_OUT_IMG_HEIGHT   : integer := p_INPUT_IMG_HEIGHT - (p_KERNEL_HEIGHT-1);
   constant c_ROW_BUF_SIZE     : integer := p_INPUT_IMG_WIDTH - p_KERNEL_WIDTH;
@@ -58,6 +60,8 @@ architecture  arch of Datapath_Gaussian_2D is
   constant c_WIN_TOT          : integer := c_OUT_IMG_HEIGHT * c_OUT_IMG_WIDTH;
   constant c_WIN_ROW          : integer := c_OUT_IMG_WIDTH;
   constant c_INV_WIN          : integer := p_KERNEL_WIDTH-1;
+
+  signal w_CLOCK              : std_logic;
 
   signal w_DRA_OUT            : fixed_vector(c_KERNEL_SIZE-1 downto 0);
   signal w_WEIGHTS            : fixed_vector(c_KERNEL_SIZE-1 downto 0);
@@ -70,6 +74,7 @@ architecture  arch of Datapath_Gaussian_2D is
   signal w_CNT_INV_KER_OUT    : integer := 0;
 
   signal w_ENA_WR             : std_logic;
+  signal w_ENA_WK             : std_logic;
   signal w_ENA_BF             : std_logic;
   signal w_ENA_TW             : std_logic;
   signal w_ENA_RW             : std_logic;
@@ -77,7 +82,23 @@ architecture  arch of Datapath_Gaussian_2D is
 
 begin
 
+  u_CLK : process(i_CLK, i_VALID_PIXEL)
+  begin
+    if(rising_edge(i_CLK)) then
+      if(i_VALID_PIXEL = '1') then
+        w_CLOCK <= '1';
+      else
+        w_CLOCK <= '0';
+      end if;
+    else
+        w_CLOCK <= '0';
+    end if;
+  end process;
+
+
+  --w_CLOCK  <= i_CLK         and i_VALID_PIXEL;
   w_ENA_WR <= i_ENA_WRI_REG and i_VALID_PIXEL;
+  w_ENA_WK <= i_ENA_WRI_KER and i_VALID_PIXEL;
 
   -- Generic Delay Row
   DRA_i : DRA
@@ -92,25 +113,46 @@ begin
     i_CLK         => i_CLK,
     i_RST         => i_RST,
     i_INPUT_PIXEL => i_INPUT_PIXEL,
-    i_ENA_WRI_KER => i_ENA_WRI_KER,
+    i_ENA_WRI_KER => w_ENA_WK,
     o_OUT_KERNEL  => w_DRA_OUT
   );
 
--- g_filter : if p_KERNEL_HEIGHT = 3 generate
+--g_filter : if p_KERNEL_HEIGHT = 3 generate
 
   --Operation
-    -- Filter_3_i : Filter_3
+  Filter_3_i : Filter_3
+  generic map (
+    p_FILTER_SIZE => c_KERNEL_SIZE
+  )
+  port map (
+    i_CLK         => i_CLK,
+    i_RST         => i_RST,
+    i_VALID_PIXEL => i_VALID_PIXEL,
+    i_ENA_REG     => w_ENA_WR,
+    i_KERNEL      => w_DRA_OUT,
+    i_WEIGHTS     => c_Gaussian_Kernel_3,
+    o_PIX_RDY     => o_PIX_RDY,
+    o_RESULT      => o_OUT_PIXEL
+  );
+
+    -- No multiplications performed
+    -- Output is the first element in the i_KERNEL (i_KERNEL(0))
+
+    -- Test_Filter_3_i : Test_Filter_3
     -- generic map (
     --   p_FILTER_SIZE => c_KERNEL_SIZE
     -- )
     -- port map (
-    --   i_CLK     => i_CLK,
-    --   i_RST     => i_RST,
-    --   i_ENA_REG => w_ENA_WR,
-    --   i_KERNEL  => w_DRA_OUT,
-    --   i_WEIGHTS => c_Gaussian_Kernel_3,
-    --   o_RESULT  => o_OUT_PIXEL
+    --   i_CLK         => i_CLK,
+    --   i_RST         => i_RST,
+    --   i_VALID_PIXEL => i_VALID_PIXEL,
+    --   i_ENA_REG     => w_ENA_WR,
+    --   i_KERNEL      => w_DRA_OUT,
+    --   i_WEIGHTS     => c_Gaussian_Kernel_3,
+    --   o_PIX_RDY     => o_PIX_RDY,
+    --   o_RESULT      => o_OUT_PIXEL
     -- );
+
     --
     -- Filter_Lut_3_i : Filter_Lut_3
     -- generic map (
@@ -179,18 +221,18 @@ begin
     -- );
   -- elsif p_KERNEL_HEIGHT = 5 generate
   --
-  --   Filter_5_i : Filter_5
-  --   generic map (
-  --     p_FILTER_SIZE => c_KERNEL_SIZE
-  --   )
-  --   port map (
-  --     i_CLK     => i_CLK,
-  --     i_RST     => i_RST,
-  --     i_ENA_REG => w_ENA_WR,
-  --     i_KERNEL  => w_DRA_OUT,
-  --     i_WEIGHTS => c_Gaussian_Kernel_5,
-  --     o_RESULT  => o_OUT_PIXEL
-  --   );
+    -- Filter_5_i : Filter_5
+    -- generic map (
+    --   p_FILTER_SIZE => c_KERNEL_SIZE
+    -- )
+    -- port map (
+    --   i_CLK     => i_CLK,
+    --   i_RST     => i_RST,
+    --   i_ENA_REG => w_ENA_WR,
+    --   i_KERNEL  => w_DRA_OUT,
+    --   i_WEIGHTS => c_Gaussian_Kernel_5,
+    --   o_RESULT  => o_OUT_PIXEL
+    -- );
   --
   --   -- Filter_LUT_5_i : Filter_LUT_5
   --   -- generic map (
@@ -265,6 +307,9 @@ begin
   w_ENA_TW          <= i_ENA_CNT_KER_TOT      and i_VALID_PIXEL;
   w_ENA_RW          <= i_ENA_CNT_KER_ROW      and i_VALID_PIXEL;
   w_ENA_IW          <= i_ENA_CNT_INV_KER      and i_VALID_PIXEL;
+
+-- -1 CHANGED TO -2 IN BUF FIL
+-- -1 CHANGED TO 0 IN INV WIN
 
   CNT_BUF_FIL : Counter
   port map (
