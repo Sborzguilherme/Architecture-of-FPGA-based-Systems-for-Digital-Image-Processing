@@ -1,47 +1,40 @@
-## System Overview
+# FPGA based Systems for Digital Image Processing
 
-Since image processing algorithms are expensive to be executed in software, hardware accelerators can be developed to increase performance for those algorithms. Hardware accelerators can consume less energy and execute fast while achieving good results.   
+Since image processing algorithms are expensive to be executed in software, hardware accelerators can be developed to increase performance for those algorithms. **Hardware accelerators** can consume less energy and execute fast while achieving good results.
 
-Developed systems: VLPD (Vehicular License Plate Detection) step for the ALPR (Automatic License Plate Recognition): FPGA implementation of VLPD using an algorithm based on morphologic operations. 
+In this context, this worked tries to identify hardware architectures implementations that can be applied over different use cases, and measure its impact in system metrics such as **latency, silicon cost and power consuption**. The use cases chosen in this work are **ALPR** (Automatic License Plate Recognition) and **Gaussian filter** algorithms. 
 
-Gaussian Filter: FPGA implementation for the Gaussian filter using approximation techniques.
-  
-  
+## ALPR
 
-![ALPR System Architecture ](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/en_alpr_steps.png)
+<p align="center">
+  <img src="https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/en_alpr_steps.png" height="75%" width="75%">
+</p>
 
-You can use the [editor on GitHub](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+An ALPR system can be divided into four steps: 
+  - Image Acquisition 
+  - Vehicle License Plate Detection – VLPD 
+  - Character Segmentation – CS 
+  - Character Recognition – CR
 
-### Markdown
+In this study we chose to implement the **VLPD** step, since its the most time consuming step in the whole process, and presents some characteristics that can be found in others image processing algorithms.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+<p align="center">
+  <img src="https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/en_block_diagram.png" height="75%" width="75%">
+</p>
 
-```markdown
-Syntax highlighted code block
+After accelerating the VLPD process we were able to achieve an **speedup of almost 23 times over software implementation**, while running in a frequency more than 10 times lower.
 
-# Header 1
-## Header 2
-### Header 3
+To get more details about our design and results, please check it out our [paper](https://ieeexplore.ieee.org/abstract/document/8862314) 
 
-- Bulleted
-- List
+## Gaussian Filter
 
-1. Numbered
-2. List
+The second algorithm implemented was the Gaussian Filter, a well-know implementation, usually used for image smoothing on initial stages of edge detection algorithms. Since its a widely used application, we chose to implement different **hardware architectures** for this filter, and compare system metrics, aiming to identify how each implementation impact the system.
 
-**Bold** and _Italic_ and `Code` text
+We also explore techiniques to improve **hardware/software** communication in a SOC-FPGA.
 
-[Link](url) and ![Image](src)
-```
+<p align="center">
+  <img src="https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/blob/master/Images/DMA.png" height="75%" width="75%">
+</p>
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/Sborzguilherme/Architecture-of-FPGA-based-Systems-for-Digital-Image-Processing/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+Here is link to the article, in case you want to get more details about out implementation: [white paper](https://sol.sbc.org.br/index.php/sbesc_estendido/article/view/13111)
